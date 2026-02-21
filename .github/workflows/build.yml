@@ -28,11 +28,16 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install pygame pyinstaller
-      - run: pyinstaller --onefile main.py
+      - run: pyinstaller --onefile --windowed main.py
+      - name: Create DMG
+        run: |
+          mkdir -p dist/dmg
+          cp -r dist/main.app dist/dmg/Claude\ of\ Fortune.app
+          hdiutil create -volname "Claude of Fortune" -srcfolder dist/dmg -ov -format UDZO dist/claude-of-fortune-mac.dmg
       - uses: actions/upload-artifact@v4
         with:
           name: claude-of-fortune-mac
-          path: dist/main
+          path: dist/claude-of-fortune-mac.dmg
 
   build-linux:
     runs-on: ubuntu-latest
@@ -58,11 +63,11 @@ jobs:
       - name: Rename files
         run: |
           mv claude-of-fortune-windows/main.exe claude-of-fortune-windows.exe
-          mv claude-of-fortune-mac/main claude-of-fortune-mac.bin
+          mv claude-of-fortune-mac/claude-of-fortune-mac.dmg claude-of-fortune-mac.dmg
           mv claude-of-fortune-linux/main claude-of-fortune-linux.bin
       - uses: softprops/action-gh-release@v2
         with:
           files: |
             claude-of-fortune-windows.exe
-            claude-of-fortune-mac.bin
+            claude-of-fortune-mac.dmg
             claude-of-fortune-linux.bin
