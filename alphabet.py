@@ -1,5 +1,5 @@
 import pygame
-from constants import SLOT_WIDTH, SLOT_HEIGHT, GAP
+from constants import LETTER_SLOT_WIDTH, LETTER_SLOT_HEIGHT, GAP
 
 
 class Alphabet:
@@ -7,22 +7,22 @@ class Alphabet:
         self.font = font
         self.guessed = set()
 
-        total_width = 26 * SLOT_WIDTH + 25 * GAP
+        total_width = 26 * LETTER_SLOT_WIDTH + 25 * GAP
         start_x = (screen_width - total_width) // 2
-        y = screen_height - SLOT_HEIGHT - 20
+        y = screen_height - LETTER_SLOT_HEIGHT - 20
 
-        self.slots = {}
+        self.letter_slots = {}
         for i, char in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ'):
-            x = start_x + i * (SLOT_WIDTH + GAP)
-            self.slots[char] = pygame.Rect(x, y, SLOT_WIDTH, SLOT_HEIGHT)
+            x = start_x + i * (LETTER_SLOT_WIDTH + GAP)
+            self.letter_slots[char] = pygame.Rect(x, y, LETTER_SLOT_WIDTH, LETTER_SLOT_HEIGHT)
 
     def guess(self, letter):
         self.guessed.add(letter.upper())
 
     def draw(self, screen):
-        for char, rect in self.slots.items():
+        for char, rect in self.letter_slots.items():
             if char in self.guessed:
-                surface = self.font.render(char, True, 'grey')
+                surface = self.font.render(char, True, '#333333')
             else:
                 surface = self.font.render(char, True, 'white')
             letter_rect = surface.get_rect(center=rect.center)

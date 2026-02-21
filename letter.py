@@ -1,10 +1,10 @@
 import pygame
-from constants import SLOT_WIDTH, SLOT_HEIGHT
+from constants import LETTER_SLOT_WIDTH, LETTER_SLOT_HEIGHT
 
 
 class Letter:
-    def __init__(self, x, y, font):
-        self.rect = pygame.Rect(x, y, SLOT_WIDTH, SLOT_HEIGHT)
+    def __init__(self, x, y, font, width=LETTER_SLOT_WIDTH, height=LETTER_SLOT_HEIGHT):
+        self.rect = pygame.Rect(x, y, width, height)
         self.letter = None
         self.font = font
 
