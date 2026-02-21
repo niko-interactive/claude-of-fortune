@@ -2,74 +2,90 @@
 
 A Wheel of Fortune-style word guessing game built with Python and Pygame.
 
-## Gameplay
+---
 
-A secret phrase is displayed as a row of blank letter slots. Guess letters one at a time using your keyboard. Reveal the full phrase before running out of strikes to win!
+## How to Play
 
-- ✅ Correct guess — matching letters are revealed
-- ❌ Wrong guess — one strike is added (3 strikes and you lose)
-- The topic of the phrase is shown in the top left (e.g. *Places*, *Food & Drink*)
-- The full alphabet is displayed at the bottom — guessed letters turn grey
-- A popup appears when you win or lose with a **Play Again** button
+A secret phrase is hidden behind a row of blank letter slots. Guess letters one at a time using your keyboard to reveal the phrase. The topic category is displayed below the phrase to help you along.
 
-## Project Structure
+- **Correct guess** — matching letters are revealed in the phrase
+- **Wrong guess** — one strike is added
+- **3 strikes** and you lose (more strikes can be unlocked)
+- Reveal the full phrase before running out of strikes to win
 
-```
-claude_of_fortune/
-├── main.py          # Game loop and entry point
-├── constants.py     # Screen size and shared dimensions
-├── letter.py        # Individual letter slot
-├── word.py          # Manages the row of letter slots for the phrase
-├── alphabet.py      # Displays A-Z at the bottom of the screen
-├── strikes.py       # Tracks and displays strikes in the top right
-├── topic.py         # Displays the puzzle category in the top left
-├── puzzles.py       # Dataset of 100 phrase and topic pairs
-└── README.md
-```
+---
 
-## Requirements
+## Upgrades
 
-- Python 3.x
-- Pygame
+Build up your win streak to unlock passive upgrades that carry into every round:
+
+| Streak | Upgrade |
+|---|---|
+| 3 | Free Consonant revealed at the start of each round |
+| 5 | Free Consonant is guaranteed to be in the phrase |
+| 7 | Gain a 4th strike |
+| 9 | Free Vowel revealed at the start of each round |
+| 11 | Free Vowel is guaranteed to be in the phrase |
+| 13 | Gain a 5th strike |
+
+Press the **Upgrades** button at the top of the screen to see your current progress.
+
+---
 
 ## Installation
 
-1. Clone or download the repository
-2. Install dependencies:
+### Windows
+
+1. Go to the [Releases](../../releases) page
+2. Download `claude-of-fortune-windows.exe`
+3. Double click to run — no installation needed
+
+### Mac
+
+1. Go to the [Releases](../../releases) page
+2. Download `claude-of-fortune-mac.dmg`
+3. Open the DMG and drag the app to your Applications folder
+4. On first launch, right-click the app and choose **Open**
+5. Click **Open** on the security warning — this only appears the first time
+
+> The security warning appears because the app is not signed with an Apple Developer certificate. This is normal for independent projects.
+
+### Linux
+
+1. Go to the [Releases](../../releases) page
+2. Download `claude-of-fortune-linux.bin`
+3. Open a terminal and make it executable:
 ```
-pip install pygame
+chmod +x claude-of-fortune-linux.bin
 ```
-3. Run the game:
+4. Run it:
 ```
-python main.py
-```
-
-## Adding Puzzles
-
-Puzzles are stored in `puzzles.py` as a list of tuples:
-
-```python
-("PHRASE GOES HERE", "Category")
-```
-
-Just add new entries to the `PUZZLES` list. Categories currently in use:
-
-- Things
-- Places
-- People
-- Phrases
-- Before & After
-- Food & Drink
-- Events
-- Around the House
-
-## Building an Executable
-
-To share the game with friends who don't have Python installed:
-
-```
-pip install pyinstaller
-pyinstaller --onefile main.py
+./claude-of-fortune-linux.bin
 ```
 
-The `.exe` will be output to the `dist/` folder.
+---
+
+## Puzzle Categories
+
+The game includes 275 puzzles across 11 categories:
+
+- **Thing** — everyday objects
+- **Proper Name** — famous people throughout history
+- **Proper Place** — famous real-world landmarks and locations
+- **Place** — ambiguous everyday locations
+- **Phrase** — common idioms and expressions
+- **Before & After** — two phrases sharing a middle word
+- **Food & Drink** — dishes and drinks
+- **Event** — holidays, ceremonies, and occasions
+- **Around the House** — rooms, furniture, and household features
+- **What Are You Doing?** — actions and activities
+- **Occupation** — jobs and careers
+
+---
+
+## Controls
+
+| Key | Action |
+|---|---|
+| A–Z | Guess a letter |
+| Enter | Close popup or upgrades menu |

@@ -59,6 +59,18 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
+      - name: Extract release notes
+        run: |
+          python3 - <<'EOF'
+          import re
+          with open("CHANGELOG.md", "r") as f:
+              content = f.read()
+          match = re.search(r'## v[\d.]+.*?\n(.*?)(?=## v[\d.]|\Z)', content, re.DOTALL)
+          if match:
+              with open("RELEASE_NOTES.md", "w") as f:
+                  f.write(match.group(1).strip())
+          EOF
       - uses: actions/download-artifact@v4
       - name: Rename files
         run: |
@@ -67,6 +79,7 @@ jobs:
           mv claude-of-fortune-linux/main claude-of-fortune-linux.bin
       - uses: softprops/action-gh-release@v2
         with:
+          body_path: RELEASE_NOTES.md
           files: |
             claude-of-fortune-windows.exe
             claude-of-fortune-mac.dmg
