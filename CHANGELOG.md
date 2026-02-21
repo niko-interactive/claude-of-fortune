@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.3
+
+### New Features
+- Puzzle difficulty system using a formula based on unique letters, letter rarity (Scrabble values), average word length, and number of words
+- Puzzles are now filtered by difficulty based on the player's current streak — harder puzzles unlock as the streak grows
+- "What Are You Doing?" category receives adjusted difficulty scoring since I, N, and G are effectively free letters due to every puzzle ending in ING
+
+### Difficulty Gates
+| Streak | Max Difficulty | Approx Puzzles Available |
+|---|---|---|
+| 0–2 | 200 | ~54 |
+| 3–4 | 350 | ~127 |
+| 5–6 | 500 | ~174 |
+| 7–8 | 700 | ~208 |
+| 9+ | No limit | 274 |
+
+### Content
+- Removed accented characters from all puzzles — English characters only
+
+---
+
 ## v1.2
 
 ### New Features
@@ -22,7 +43,7 @@
 - Expanded all categories to 25 puzzles each
 - Renamed Person → Proper Name
 - Renamed Place → Proper Place for famous real-world landmarks
-- Added new Place category for ambiguous everyday locations
+- Added new Place category for ambiguous everyday locations (e.g. Pond in the Park, Back Corner Booth)
 - Added new Occupation category
 - Total puzzle count increased from 115 to 275 across 11 categories
 
@@ -39,6 +60,7 @@
 
 ### Changes
 - Guessed letters in the alphabet are now darker grey
+- Removed borders from the streak, topic, and alphabet letter displays
 - Play Again button updated to white outline with black background and white text
 
 ### Content
