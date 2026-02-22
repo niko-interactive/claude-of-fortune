@@ -1,5 +1,55 @@
 # Changelog
 
+## v1.4
+
+### New Features
+- Shop system with two tabs: Upgrades and Consumables
+- Upgrades are permanent until the player loses; consumables are single-use and take effect immediately
+- Money is earned on each win based on puzzle difficulty and strikes remaining: `(difficulty / 10) × max of (streak / 10) or 1 × (1 + 0.05 × strikes_left)`
+
+### Upgrades
+| Cost | Upgrade |
+|---|---|
+| $50 | Free Consonant — a random consonant is revealed at the start of each round |
+| $100 | Guaranteed Consonant — free consonant is guaranteed to be in the phrase |
+| $100 | Free Vowel — a random vowel is revealed at the start of each round |
+| $200 | Guaranteed Vowel — free vowel is guaranteed to be in the phrase |
+| $250 | 4th Strike |
+| $500 | 5th Strike |
+
+### Consumables
+| Cost | Consumable |
+|---|---|
+| $25 | Reveal Consonant — reveals a random hidden consonant in the current phrase |
+| $50 | Reveal Vowel — reveals a random hidden vowel in the current phrase |
+| $25 | Eliminate 3 Letters — removes 3 wrong letters from the alphabet display |
+| $50 | Free Guess — next wrong guess does not cost a strike |
+
+### Difficulty System Overhaul
+- Added minimum difficulty floors so later rounds are meaningfully harder, not just longer
+- Puzzle pool is rebuilt when the difficulty tier advances mid-run, phasing out easy puzzles and introducing harder ones
+- Puzzle pool is rebuilt from scratch after every loss
+
+### Difficulty Gates
+| Streak | Min | Max | ~Puzzles Available |
+|---|---|---|---|
+| 0–2 | — | 200 | ~267 |
+| 3–4 | — | 350 | ~589 |
+| 5–6 | 100 | 500 | ~782 |
+| 7–8 | 200 | 700 | ~666 |
+| 9–10 | 350 | — | ~511 |
+| 11+ | 500 | — | ~318 |
+
+### No Repeat Puzzles
+- Puzzles are no longer repeated within a single run — each puzzle is tracked and removed from the pool once solved
+- Clearing every available puzzle triggers a special "You Beat the Game!" screen
+- Losing resets the pool so a new run starts fresh
+
+### Content
+- Total puzzle count increased from 275 to 1,000 across 10 categories!
+
+---
+
 ## v1.3
 
 ### New Features

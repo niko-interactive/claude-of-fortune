@@ -22,7 +22,10 @@ class Streak:
         self.previous = self.count
         self.count = 0
 
-    def draw(self, screen):
-        """Draw the streak counter in the top left corner of the screen."""
-        surface = self.font.render(f'STREAK  {self.count}', True, 'white')
-        screen.blit(surface, (20, 20))
+    def draw(self, screen, money):
+        """Draw the streak counter and coin balance in the top left corner."""
+        streak_surface = self.font.render(f'STREAK  {self.count}', True, 'white')
+        screen.blit(streak_surface, (20, 20))
+
+        money_surface = self.font.render(f'${money}', True, 'white')
+        screen.blit(money_surface, (20, 60))

@@ -1,5 +1,11 @@
 PUZZLES = [
-    # Thing
+    # -------------------------------------------------------------------------
+    # Thing (100 total)
+    # Existing 25 + 75 new
+    # Target distribution: ~20 each in 0-200, 200-350, 350-500, 500-700, 700+
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("BIRTHDAY CAKE", "Thing"),
     ("SWIMMING POOL", "Thing"),
     ("GARDEN HOSE", "Thing"),
@@ -26,7 +32,91 @@ PUZZLES = [
     ("FISH TANK", "Thing"),
     ("THROW PILLOW", "Thing"),
 
-    # Proper Name
+    # -- new: 0-200 --
+    ("TOY BOX", "Thing"),
+    ("FLIP FLOPS", "Thing"),
+    ("PEA COAT", "Thing"),
+    ("BED SHEET", "Thing"),
+    ("TEA CUP", "Thing"),
+    ("ICE CUBE", "Thing"),
+    ("CAR KEY", "Thing"),
+    ("LIP BALM", "Thing"),
+    ("HAIR TIE", "Thing"),
+    ("DISH RAG", "Thing"),
+    ("BOOK BAG", "Thing"),
+    ("CANE POLE", "Thing"),
+    ("STEP STOOL", "Thing"),
+    ("SHOE HORN", "Thing"),
+    ("LUNCH BOX", "Thing"),
+    ("BATH MAT", "Thing"),
+    ("DOOR MAT", "Thing"),
+    ("FIRE PIT", "Thing"),
+    ("HAND FAN", "Thing"),
+    ("NOTE PAD", "Thing"),
+
+    # -- new: 200-350 --
+    ("KEY CHAIN", "Thing"),
+    ("JUMP ROPE", "Thing"),
+    ("BUBBLE WRAP", "Thing"),
+    ("SNOW BLOWER", "Thing"),
+    ("WEATHER VANE", "Thing"),
+    ("TOOL CHEST", "Thing"),
+    ("GIFT WRAP", "Thing"),
+    ("BREAD BOX", "Thing"),
+    ("COIN PURSE", "Thing"),
+    ("PEPPER GRINDER", "Thing"),
+    ("COAT HANGER", "Thing"),
+    ("PHONE CASE", "Thing"),
+    ("PICTURE FRAME", "Thing"),
+    ("MOUSE TRAP", "Thing"),
+    ("CANDLE STICK", "Thing"),
+    ("WAGON WHEEL", "Thing"),
+    ("MAIL BOX", "Thing"),
+    ("BOOK MARK", "Thing"),
+    ("DISH TOWEL", "Thing"),
+    ("FLOWER POT", "Thing"),
+
+    # -- new: 350-500 --
+    ("TROPHY CASE", "Thing"),
+    ("PENCIL SHARPENER", "Thing"),
+    ("SLEEPING BAG", "Thing"),
+    ("PARKING METER", "Thing"),
+    ("FIRE ESCAPE", "Thing"),
+    ("LOADING DOCK", "Thing"),
+    ("BULLETIN BOARD", "Thing"),
+    ("WELCOME SIGN", "Thing"),
+    ("LUGGAGE TAG", "Thing"),
+    ("SPICE RACK", "Thing"),
+    ("BIKE LOCK", "Thing"),
+    ("DOOR STOPPER", "Thing"),
+    ("KITCHEN TIMER", "Thing"),
+    ("GARDEN GNOME", "Thing"),
+    ("PIGEONHOLE", "Thing"),
+
+    # -- new: 500-700 --
+    ("EXERCISE BIKE", "Thing"),
+    ("ELECTRIC BLANKET", "Thing"),
+    ("CARBON FILTER", "Thing"),
+    ("SMOKE DETECTOR", "Thing"),
+    ("PORCH SWING", "Thing"),
+    ("MEDICINE DROPPER", "Thing"),
+    ("MIXING BOWL SET", "Thing"),
+    ("COMPASS ROSE", "Thing"),
+    ("JEWELRY BOX", "Thing"),
+    ("PERISCOPE", "Thing"),
+
+    # -- new: 700+ --
+    ("SNOW BLOWER CARBURETOR", "Thing"),
+    ("FLEXIBLE MEASURING TAPE", "Thing"),
+    ("PNEUMATIC DRILL BIT", "Thing"),
+    ("BEVELED MIRROR FRAME", "Thing"),
+    ("COPPER WEATHERVANE", "Thing"),
+
+    # -------------------------------------------------------------------------
+    # Proper Name (100 total)
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("ALBERT EINSTEIN", "Proper Name"),
     ("MARIE CURIE", "Proper Name"),
     ("ABRAHAM LINCOLN", "Proper Name"),
@@ -53,7 +143,91 @@ PUZZLES = [
     ("JULIUS CAESAR", "Proper Name"),
     ("HELEN KELLER", "Proper Name"),
 
-    # Proper Place
+    # -- new: 0-200 --
+    ("BILL GATES", "Proper Name"),
+    ("ANN FRANK", "Proper Name"),
+    ("BOB HOPE", "Proper Name"),
+    ("NEIL SIMON", "Proper Name"),
+    ("ALAN TURING", "Proper Name"),
+    ("ANNE BOLEYN", "Proper Name"),
+    ("OPRAH WINFREY", "Proper Name"),
+    ("PLATO", "Proper Name"),
+    ("HOMER", "Proper Name"),
+    ("MOSES", "Proper Name"),
+    ("DIANA ROSS", "Proper Name"),
+    ("MERYL STREEP", "Proper Name"),
+    ("NEIL YOUNG", "Proper Name"),
+    ("ROSA BONHEUR", "Proper Name"),
+    ("DEAN MARTIN", "Proper Name"),
+    ("ELLA FITZGERALD", "Proper Name"),
+    ("LOUIS ARMSTRONG", "Proper Name"),
+    ("ERNEST HEMINGWAY", "Proper Name"),
+    ("GEORGE WASHINGTON", "Proper Name"),
+    ("THOMAS JEFFERSON", "Proper Name"),
+
+    # -- new: 200-350 --
+    ("CHARLES DICKENS", "Proper Name"),
+    ("VINCENT VAN GOGH", "Proper Name"),
+    ("MARCO POLO", "Proper Name"),
+    ("GALILEO GALILEI", "Proper Name"),
+    ("MICHELANGELO", "Proper Name"),
+    ("ALEXANDER HAMILTON", "Proper Name"),
+    ("SIGMUND FREUD", "Proper Name"),
+    ("PABLO PICASSO", "Proper Name"),
+    ("JOHN STEINBECK", "Proper Name"),
+    ("DOROTHEA DIX", "Proper Name"),
+    ("ALFRED HITCHCOCK", "Proper Name"),
+    ("FRANK LLOYD WRIGHT", "Proper Name"),
+    ("JOHN F KENNEDY", "Proper Name"),
+    ("MOTHER TERESA", "Proper Name"),
+    ("LANGSTON HUGHES", "Proper Name"),
+    ("BESSIE COLEMAN", "Proper Name"),
+    ("SOJOURNER TRUTH", "Proper Name"),
+    ("CLARA BARTON", "Proper Name"),
+    ("BOOKER T WASHINGTON", "Proper Name"),
+    ("DOROTHY PARKER", "Proper Name"),
+
+    # -- new: 350-500 --
+    ("ALEKSANDR PUSHKIN", "Proper Name"),
+    ("CHRISTOPH COLUMBUS", "Proper Name"),
+    ("JOSEPH STALIN", "Proper Name"),
+    ("ELEANOR ROOSEVELT", "Proper Name"),
+    ("GEORGE ORWELL", "Proper Name"),
+    ("VIRGINIA WOOLF", "Proper Name"),
+    ("BRAM STOKER", "Proper Name"),
+    ("AGATHA CHRISTIE", "Proper Name"),
+    ("DOROTHY HODGKIN", "Proper Name"),
+    ("NIKOLAI GOGOL", "Proper Name"),
+    ("HENRY DAVID THOREAU", "Proper Name"),
+    ("EMILY DICKINSON", "Proper Name"),
+    ("SIMONE DE BEAUVOIR", "Proper Name"),
+    ("MIKHAIL BULGAKOV", "Proper Name"),
+    ("RALPH WALDO EMERSON", "Proper Name"),
+
+    # -- new: 500-700 --
+    ("FYODOR DOSTOEVSKY", "Proper Name"),
+    ("SOREN KIERKEGAARD", "Proper Name"),
+    ("IMMANUEL KANT", "Proper Name"),
+    ("THURGOOD MARSHALL", "Proper Name"),
+    ("ELIZABETH BLACKWELL", "Proper Name"),
+    ("PHILLIS WHEATLEY", "Proper Name"),
+    ("WILLIAM WILBERFORCE", "Proper Name"),
+    ("ALEKSANDR SOLZHENITSYN", "Proper Name"),
+    ("VOLTAIRE", "Proper Name"),
+    ("COPERNICUS", "Proper Name"),
+
+    # -- new: 700+ --
+    ("KWAME NKRUMAH", "Proper Name"),
+    ("WANGARI MAATHAI", "Proper Name"),
+    ("BENAZIR BHUTTO", "Proper Name"),
+    ("MAXIMILIEN ROBESPIERRE", "Proper Name"),
+    ("ZHOU ENLAI", "Proper Name"),
+
+    # -------------------------------------------------------------------------
+    # Proper Place (100 total)
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("NIAGARA FALLS", "Proper Place"),
     ("TIMES SQUARE", "Proper Place"),
     ("GRAND CANYON", "Proper Place"),
@@ -80,7 +254,88 @@ PUZZLES = [
     ("ANGEL FALLS", "Proper Place"),
     ("VICTORIA FALLS", "Proper Place"),
 
-    # Place
+    # -- new: 0-200 --
+    ("NILE RIVER", "Proper Place"),
+    ("DEAD SEA", "Proper Place"),
+    ("NORTH POLE", "Proper Place"),
+    ("SOUTH POLE", "Proper Place"),
+    ("RED SEA", "Proper Place"),
+    ("MOUNT FUJI", "Proper Place"),
+    ("GOBI DESERT", "Proper Place"),
+    ("LAKE TAHOE", "Proper Place"),
+    ("PALM BEACH", "Proper Place"),
+    ("CAPE COD", "Proper Place"),
+    ("DEATH VALLEY", "Proper Place"),
+    ("LAKE ERIE", "Proper Place"),
+    ("LAKE HURON", "Proper Place"),
+    ("CORAL SEA", "Proper Place"),
+    ("ENGLISH CHANNEL", "Proper Place"),
+    ("SUEZ CANAL", "Proper Place"),
+    ("PANAMA CANAL", "Proper Place"),
+    ("STRAIT OF GIBRALTAR", "Proper Place"),
+    ("CAPE OF GOOD HOPE", "Proper Place"),
+    ("TIERRA DEL FUEGO", "Proper Place"),
+
+    # -- new: 200-350 --
+    ("GRAND PALACE", "Proper Place"),
+    ("HOOVER DAM", "Proper Place"),
+    ("MOUNT KILIMANJARO", "Proper Place"),
+    ("BORA BORA", "Proper Place"),
+    ("GREAT SMOKY MOUNTAINS", "Proper Place"),
+    ("VENICE CANALS", "Proper Place"),
+    ("POMPEII RUINS", "Proper Place"),
+    ("GALAPAGOS ISLANDS", "Proper Place"),
+    ("FORBIDDEN CITY", "Proper Place"),
+    ("MOUNT OLYMPUS", "Proper Place"),
+    ("CAPE CANAVERAL", "Proper Place"),
+    ("ALCATRAZ ISLAND", "Proper Place"),
+    ("WALL STREET", "Proper Place"),
+    ("GOLDEN TRIANGLE", "Proper Place"),
+    ("SILICON VALLEY", "Proper Place"),
+    ("AREA FIFTY ONE", "Proper Place"),
+    ("PIKE PLACE MARKET", "Proper Place"),
+
+    # -- new: 350-500 --
+    ("DEVILS TOWER", "Proper Place"),
+    ("BRYCE CANYON", "Proper Place"),
+    ("ZION NATIONAL PARK", "Proper Place"),
+    ("GLACIER NATIONAL PARK", "Proper Place"),
+    ("MOUNT WHITNEY", "Proper Place"),
+    ("DENALI NATIONAL PARK", "Proper Place"),
+    ("HAVASU FALLS", "Proper Place"),
+    ("CRATER LAKE", "Proper Place"),
+    ("PAINTED DESERT", "Proper Place"),
+    ("WHITE CLIFFS OF DOVER", "Proper Place"),
+    ("SCOTTISH HIGHLANDS", "Proper Place"),
+    ("NORWEGIAN FJORDS", "Proper Place"),
+    ("SWISS ALPS", "Proper Place"),
+    ("AMALFI COAST", "Proper Place"),
+    ("TUSCAN COUNTRYSIDE", "Proper Place"),
+
+    # -- new: 500-700 --
+    ("CHECKPOINT CHARLIE", "Proper Place"),
+    ("MOUNT VESUVIUS", "Proper Place"),
+    ("SERENGETI NATIONAL PARK", "Proper Place"),
+    ("KAMCHATKA PENINSULA", "Proper Place"),
+    ("OKEFENOKEE SWAMP", "Proper Place"),
+    ("MONTEVERDE CLOUD FOREST", "Proper Place"),
+    ("LAKE BAIKAL", "Proper Place"),
+    ("TORRES DEL PAINE", "Proper Place"),
+    ("PATAGONIA WILDERNESS", "Proper Place"),
+    ("NAMIB DESERT", "Proper Place"),
+
+    # -- new: 700+ --
+    ("KHYBER PASS", "Proper Place"),
+    ("OKAVANGO DELTA", "Proper Place"),
+    ("BUNGLE BUNGLE RANGE", "Proper Place"),
+    ("TITICACA LAKE SHORE", "Proper Place"),
+    ("BWINDI IMPENETRABLE FOREST", "Proper Place"),
+
+    # -------------------------------------------------------------------------
+    # Place (100 total)
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("POND IN THE PARK", "Place"),
     ("CORNER COFFEE SHOP", "Place"),
     ("END OF THE DRIVEWAY", "Place"),
@@ -107,7 +362,90 @@ PUZZLES = [
     ("TOP OF THE FERRIS WHEEL", "Place"),
     ("BACK ROW OF THE MOVIE THEATER", "Place"),
 
-    # Phrase
+    # -- new: 0-200 --
+    ("TOP BUNK", "Place"),
+    ("TREE FORT", "Place"),
+    ("HAY BARN", "Place"),
+    ("FIRE LANE", "Place"),
+    ("PIT LANE", "Place"),
+    ("DEAD END", "Place"),
+    ("END ZONE", "Place"),
+    ("HOME BASE", "Place"),
+    ("LOST AND FOUND", "Place"),
+    ("BACK NINE", "Place"),
+    ("PIT STOP", "Place"),
+    ("SAFE HOUSE", "Place"),
+    ("COLD CASE UNIT", "Place"),
+    ("THE BOILER ROOM", "Place"),
+    ("BREAK ROOM", "Place"),
+    ("COAT CHECK", "Place"),
+    ("GREEN ROOM", "Place"),
+    ("WAR ROOM", "Place"),
+    ("CROWS NEST", "Place"),
+
+    # -- new: 200-350 --
+    ("FIRE ESCAPE LANDING", "Place"),
+    ("END OF THE LINE", "Place"),
+    ("BACK OF THE BUS", "Place"),
+    ("TOP OF THE FOOD CHAIN", "Place"),
+    ("CENTER OF THE MAZE", "Place"),
+    ("CORNER OF THE RING", "Place"),
+    ("TOP OF THE LIGHTHOUSE", "Place"),
+    ("BOTTOM OF THE BARREL", "Place"),
+    ("DEEP END OF THE POOL", "Place"),
+    ("SIDE OF THE ROAD", "Place"),
+    ("HEART OF THE CITY", "Place"),
+    ("EDGE OF THE MAP", "Place"),
+    ("END OF THE PIER", "Place"),
+    ("BOTTOM OF THE HILL", "Place"),
+    ("BACK OF THE CAVE", "Place"),
+    ("TOP OF THE WORLD", "Place"),
+    ("FORK IN THE ROAD", "Place"),
+    ("SEAT OF POWER", "Place"),
+    ("SHADOW OF THE MOUNTAIN", "Place"),
+    ("MOUTH OF THE RIVER", "Place"),
+
+    # -- new: 350-500 --
+    ("BACK ALLEY BEHIND THE BOWLING ALLEY", "Place"),
+    ("FORGOTTEN CORNER OF THE LIBRARY", "Place"),
+    ("OVERFLOW PARKING LOT", "Place"),
+    ("OBSERVATION DECK AT DAWN", "Place"),
+    ("BOTTOM OF THE STAIRWELL", "Place"),
+    ("ABANDONED DRIVE IN THEATER", "Place"),
+    ("OLD NEIGHBORHOOD BARBERSHOP", "Place"),
+    ("MUDDY RIVERBANK", "Place"),
+    ("EMPTY SWIMMING POOL", "Place"),
+    ("BACK OF THE AMBULANCE", "Place"),
+    ("LOADING BAY OF THE WAREHOUSE", "Place"),
+    ("TICKET BOOTH AT THE FAIR", "Place"),
+    ("STORM CELLAR DOOR", "Place"),
+    ("HAUNTED LIGHTHOUSE", "Place"),
+    ("DUSTY ATTIC CORNER", "Place"),
+
+    # -- new: 500-700 --
+    ("LAST BOOTH IN THE GREASY SPOON", "Place"),
+    ("THIRD FLOOR OF THE PARKING GARAGE", "Place"),
+    ("FORGOTTEN GARDEN BEHIND THE CHURCH", "Place"),
+    ("PAYPHONE ON THE CORNER", "Place"),
+    ("CONDEMNED BUILDING STAIRCASE", "Place"),
+    ("BACK ROOM OF THE PAWNSHOP", "Place"),
+    ("LOCKED WING OF THE HOSPITAL", "Place"),
+    ("SUBMERGED CITY RUINS", "Place"),
+    ("CROW BAR ROOFTOP TERRACE", "Place"),
+    ("OVERGROWN CEMETERY PATH", "Place"),
+
+    # -- new: 700+ --
+    ("LABYRINTHINE CATACOMBS BENEATH THE CITY", "Place"),
+    ("FORGOTTEN SUBWAY PLATFORM", "Place"),
+    ("CRUMBLING MEDIEVAL TOWER", "Place"),
+    ("SUBTERRANEAN CRYSTAL CAVE", "Place"),
+    ("ABANDONED PSYCHIATRIC WARD", "Place"),
+
+    # -------------------------------------------------------------------------
+    # Phrase (100 total)
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("ACTIONS SPEAK LOUDER THAN WORDS", "Phrase"),
     ("EVERY CLOUD HAS A SILVER LINING", "Phrase"),
     ("THE EARLY BIRD CATCHES THE WORM", "Phrase"),
@@ -134,7 +472,91 @@ PUZZLES = [
     ("WHEN PIGS FLY", "Phrase"),
     ("YOU CANT JUDGE A BOOK BY ITS COVER", "Phrase"),
 
-    # Food & Drink
+    # -- new: 0-200 --
+    ("IN HOT WATER", "Phrase"),
+    ("ON THIN ICE", "Phrase"),
+    ("CUT TO THE CHASE", "Phrase"),
+    ("OFF THE TOP OF MY HEAD", "Phrase"),
+    ("CALL IT A DAY", "Phrase"),
+    ("GIVE IT A SHOT", "Phrase"),
+    ("HIT THE ROAD", "Phrase"),
+    ("BACK TO SQUARE ONE", "Phrase"),
+    ("THE TIP OF THE ICEBERG", "Phrase"),
+    ("PULL SOMEONES LEG", "Phrase"),
+    ("HIT THE SACK", "Phrase"),
+    ("PIECE OF CAKE", "Phrase"),
+    ("ON THE FENCE", "Phrase"),
+    ("THE WHOLE NINE YARDS", "Phrase"),
+    ("BITE THE HAND THAT FEEDS YOU", "Phrase"),
+    ("ADD FUEL TO THE FIRE", "Phrase"),
+    ("TAKE THE BULL BY THE HORNS", "Phrase"),
+    ("THROW CAUTION TO THE WIND", "Phrase"),
+    ("CANT SEE THE FOREST FOR THE TREES", "Phrase"),
+    ("LIKE FINDING A NEEDLE IN A HAYSTACK", "Phrase"),
+
+    # -- new: 200-350 --
+    ("CROSS THAT BRIDGE WHEN YOU COME TO IT", "Phrase"),
+    ("GO BACK TO THE DRAWING BOARD", "Phrase"),
+    ("BURNING BRIDGES", "Phrase"),
+    ("BLOOD IS THICKER THAN WATER", "Phrase"),
+    ("A PENNY FOR YOUR THOUGHTS", "Phrase"),
+    ("THE WRITING IS ON THE WALL", "Phrase"),
+    ("DONT LOOK A GIFT HORSE IN THE MOUTH", "Phrase"),
+    ("TWO PEAS IN A POD", "Phrase"),
+    ("STEAL SOMEONES THUNDER", "Phrase"),
+    ("SPEAK OF THE DEVIL", "Phrase"),
+    ("BITE THE DUST", "Phrase"),
+    ("LET SLEEPING DOGS LIE", "Phrase"),
+    ("MISS THE BOAT", "Phrase"),
+    ("PULL OUT ALL THE STOPS", "Phrase"),
+    ("TURN OVER A NEW LEAF", "Phrase"),
+    ("PUT ALL YOUR EGGS IN ONE BASKET", "Phrase"),
+    ("STRIKE WHILE THE IRON IS HOT", "Phrase"),
+    ("THE POT CALLING THE KETTLE BLACK", "Phrase"),
+    ("ROLLING IN THE DEEP", "Phrase"),
+    ("SITTING ON THE FENCE", "Phrase"),
+
+    # -- new: 350-500 --
+    ("COMPARING APPLES TO ORANGES", "Phrase"),
+    ("DANCING AROUND THE SUBJECT", "Phrase"),
+    ("DROPPING THE BALL ON THE PROJECT", "Phrase"),
+    ("BURNING THE CANDLE AT BOTH ENDS", "Phrase"),
+    ("THROWING IN THE TOWEL", "Phrase"),
+    ("WALKING ON EGGSHELLS", "Phrase"),
+    ("GIVE CREDIT WHERE CREDIT IS DUE", "Phrase"),
+    ("COVER ALL YOUR BASES", "Phrase"),
+    ("HAVE YOUR CAKE AND EAT IT TOO", "Phrase"),
+    ("JUMP FROM THE FRYING PAN INTO THE FIRE", "Phrase"),
+    ("PULLING THE WOOL OVER SOMEONES EYES", "Phrase"),
+    ("THE STRAW THAT BROKE THE CAMELS BACK", "Phrase"),
+    ("BURNING YOUR BRIDGES BEHIND YOU", "Phrase"),
+    ("BITING OFF MORE THAN YOU CAN SWALLOW", "Phrase"),
+    ("PUT A SOCK IN IT", "Phrase"),
+
+    # -- new: 500-700 --
+    ("THROWING CAUTION TO THE FOUR WINDS", "Phrase"),
+    ("LOOKING A GIFT HORSE SQUARELY IN THE MOUTH", "Phrase"),
+    ("ROBBING PETER TO PAY PAUL", "Phrase"),
+    ("CAUGHT WITH YOUR HAND IN THE COOKIE JAR", "Phrase"),
+    ("MAKING A MOUNTAIN OUT OF A MOLEHILL", "Phrase"),
+    ("DONT THROW THE BABY OUT WITH THE BATHWATER", "Phrase"),
+    ("BEATING A DEAD HORSE", "Phrase"),
+    ("IT TAKES TWO TO TANGO", "Phrase"),
+    ("CRYING WOLF ONE TOO MANY TIMES", "Phrase"),
+    ("SHOOTING THE MESSENGER", "Phrase"),
+
+    # -- new: 700+ --
+    ("BARKING UP EVERY WRONG TREE IN THE FOREST", "Phrase"),
+    ("SQUEEZING BLOOD FROM A TURNIP", "Phrase"),
+    ("MIXING METAPHORS LIKE A PRO", "Phrase"),
+    ("JUMPING TO CONCLUSIONS WITHOUT A NET", "Phrase"),
+    ("PUTTING THE CART BEFORE THE PROVERBIAL HORSE", "Phrase"),
+
+    # -------------------------------------------------------------------------
+    # Food & Drink (100 total)
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("MACARONI AND CHEESE", "Food & Drink"),
     ("CHICKEN PARMESAN", "Food & Drink"),
     ("STRAWBERRY SHORTCAKE", "Food & Drink"),
@@ -161,7 +583,91 @@ PUZZLES = [
     ("CLAM CHOWDER", "Food & Drink"),
     ("AVOCADO TOAST", "Food & Drink"),
 
-    # Event
+    # -- new: 0-200 --
+    ("HOT DOG", "Food & Drink"),
+    ("CORN DOG", "Food & Drink"),
+    ("MEAT PIE", "Food & Drink"),
+    ("EGG ROLL", "Food & Drink"),
+    ("ICED TEA", "Food & Drink"),
+    ("CORN BREAD", "Food & Drink"),
+    ("BEAN TACO", "Food & Drink"),
+    ("HAM STEAK", "Food & Drink"),
+    ("CRAB CAKE", "Food & Drink"),
+    ("RICE CAKE", "Food & Drink"),
+    ("GREEN TEA", "Food & Drink"),
+    ("OAT BRAN", "Food & Drink"),
+    ("PEACH PIE", "Food & Drink"),
+    ("FISH TACO", "Food & Drink"),
+    ("LAMB CHOP", "Food & Drink"),
+    ("ONION RING", "Food & Drink"),
+    ("BREAD ROLL", "Food & Drink"),
+    ("BEEF STEAK", "Food & Drink"),
+    ("CREAM PUFF", "Food & Drink"),
+    ("PITA BREAD", "Food & Drink"),
+
+    # -- new: 200-350 --
+    ("FRENCH TOAST", "Food & Drink"),
+    ("APPLE CIDER", "Food & Drink"),
+    ("CHEESE STEAK", "Food & Drink"),
+    ("TUNA NOODLE CASSEROLE", "Food & Drink"),
+    ("ANGEL FOOD CAKE", "Food & Drink"),
+    ("MEAT LOAF", "Food & Drink"),
+    ("POUND CAKE", "Food & Drink"),
+    ("BANANA BREAD", "Food & Drink"),
+    ("CHILI CHEESE FRIES", "Food & Drink"),
+    ("NACHOS GRANDE", "Food & Drink"),
+    ("CHICKEN NOODLE SOUP", "Food & Drink"),
+    ("BISCUITS AND GRAVY", "Food & Drink"),
+    ("SPAGHETTI AND MEATBALLS", "Food & Drink"),
+    ("POTATO LEEK SOUP", "Food & Drink"),
+    ("PRIME RIB ROAST", "Food & Drink"),
+    ("BLACK BEAN SOUP", "Food & Drink"),
+    ("SPLIT PEA SOUP", "Food & Drink"),
+    ("TOMATO BISQUE", "Food & Drink"),
+    ("COBB SALAD", "Food & Drink"),
+    ("CLUB SANDWICH", "Food & Drink"),
+
+    # -- new: 350-500 --
+    ("PEKING DUCK", "Food & Drink"),
+    ("BEEF BOURGUIGNON", "Food & Drink"),
+    ("HOLLANDAISE SAUCE", "Food & Drink"),
+    ("RATATOUILLE", "Food & Drink"),
+    ("COQ AU VIN", "Food & Drink"),
+    ("CHICKEN MARSALA", "Food & Drink"),
+    ("SHEPHERDS PIE", "Food & Drink"),
+    ("BANGERS AND MASH", "Food & Drink"),
+    ("PENNE ARRABBIATA", "Food & Drink"),
+    ("MOULES MARINIERE", "Food & Drink"),
+    ("BOEUF STROGANOFF", "Food & Drink"),
+    ("PEACH COBBLER", "Food & Drink"),
+    ("GERMAN CHOCOLATE CAKE", "Food & Drink"),
+    ("CARROT GINGER SOUP", "Food & Drink"),
+    ("BOURBON BREAD PUDDING", "Food & Drink"),
+
+    # -- new: 500-700 --
+    ("SZECHUAN DAN DAN NOODLES", "Food & Drink"),
+    ("PROSCIUTTO WRAPPED MELON", "Food & Drink"),
+    ("POACHED PEAR IN RED WINE", "Food & Drink"),
+    ("SMOKED PAPRIKA CHICKEN THIGHS", "Food & Drink"),
+    ("GRUYERE FRENCH ONION TART", "Food & Drink"),
+    ("PICKLED WATERMELON RIND", "Food & Drink"),
+    ("CHARRED BRUSSELS SPROUTS", "Food & Drink"),
+    ("SAFFRON RISOTTO WITH SCALLOPS", "Food & Drink"),
+    ("DUCK CONFIT WITH LENTILS", "Food & Drink"),
+    ("SLOW ROASTED PORK BELLY", "Food & Drink"),
+
+    # -- new: 700+ --
+    ("SZECHUAN PEPPERCORN BEEF", "Food & Drink"),
+    ("PHYLLO WRAPPED BRIE WITH RASPBERRY", "Food & Drink"),
+    ("BLACKENED SWORDFISH WITH MANGO SALSA", "Food & Drink"),
+    ("VIETNAMESE PORK BANH MI", "Food & Drink"),
+    ("WILD MUSHROOM TARTE TATIN", "Food & Drink"),
+
+    # -------------------------------------------------------------------------
+    # Event (100 total)
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("SUPER BOWL SUNDAY", "Event"),
     ("NEW YEARS EVE PARTY", "Event"),
     ("FOURTH OF JULY FIREWORKS", "Event"),
@@ -188,7 +694,91 @@ PUZZLES = [
     ("SURPRISE BIRTHDAY PARTY", "Event"),
     ("GRADUATION CEREMONY", "Event"),
 
-    # Around the House
+    # -- new: 0-200 --
+    ("BAKE SALE", "Event"),
+    ("BOOK FAIR", "Event"),
+    ("BARN DANCE", "Event"),
+    ("GAME NIGHT", "Event"),
+    ("OPEN MIC NIGHT", "Event"),
+    ("SCHOOL PLAY", "Event"),
+    ("PEP RALLY", "Event"),
+    ("FISH FRY", "Event"),
+    ("POT LUCK DINNER", "Event"),
+    ("CAMP FIRE", "Event"),
+    ("PAPER DRIVE", "Event"),
+    ("FOOD DRIVE", "Event"),
+    ("CAR SHOW", "Event"),
+    ("PROM NIGHT", "Event"),
+    ("SOCK HOP", "Event"),
+    ("PIE EATING CONTEST", "Event"),
+    ("BOAT PARADE", "Event"),
+    ("BLOOD DRIVE", "Event"),
+    ("HALF TIME SHOW", "Event"),
+    ("MOON LANDING", "Event"),
+
+    # -- new: 200-350 --
+    ("MEMORIAL DAY COOKOUT", "Event"),
+    ("CHRISTMAS TREE LIGHTING", "Event"),
+    ("STATE FAIR OPENING DAY", "Event"),
+    ("HOMECOMING PARADE", "Event"),
+    ("CINCO DE MAYO CELEBRATION", "Event"),
+    ("GROUNDBREAKING CEREMONY", "Event"),
+    ("NEIGHBORHOOD GARAGE SALE", "Event"),
+    ("FILM FESTIVAL OPENING NIGHT", "Event"),
+    ("CHARITY AUCTION", "Event"),
+    ("MARATHON FINISH LINE", "Event"),
+    ("FIRST DAY OF SCHOOL", "Event"),
+    ("LAST DAY OF SCHOOL", "Event"),
+    ("PIANO RECITAL", "Event"),
+    ("DOG SHOW", "Event"),
+    ("HORSE SHOW", "Event"),
+    ("FLOWER SHOW", "Event"),
+    ("AWARDS BANQUET", "Event"),
+    ("FUNDRAISER GALA", "Event"),
+    ("RIBBON CUTTING CEREMONY", "Event"),
+    ("CHRISTENING CEREMONY", "Event"),
+
+    # -- new: 350-500 --
+    ("INTERNATIONAL CHESS TOURNAMENT", "Event"),
+    ("WORLD SERIES GAME SEVEN", "Event"),
+    ("SUMMER SOLSTICE CELEBRATION", "Event"),
+    ("HARVEST MOON FESTIVAL", "Event"),
+    ("DIPLOMATIC SUMMIT", "Event"),
+    ("PRESIDENTIAL INAUGURATION", "Event"),
+    ("FILM PREMIERE ON BROADWAY", "Event"),
+    ("CHAMPIONSHIP BOXING MATCH", "Event"),
+    ("CORPORATE BOARD MEETING", "Event"),
+    ("FIREWORKS GRAND FINALE", "Event"),
+    ("MARATHON OPENING GUN", "Event"),
+    ("DEMOLITION DERBY", "Event"),
+    ("POLAR BEAR PLUNGE", "Event"),
+    ("MOCK TRIAL", "Event"),
+    ("MEDIEVAL JOUSTING TOURNAMENT", "Event"),
+
+    # -- new: 500-700 --
+    ("SYNCHRONIZED DIVING CHAMPIONSHIP", "Event"),
+    ("INTERNATIONAL BALLOON FIESTA", "Event"),
+    ("PROFESSIONAL WRESTLING GRUDGE MATCH", "Event"),
+    ("COMPETITIVE BARBECUE CHAMPIONSHIP", "Event"),
+    ("NATIONAL SPELLING CHAMPIONSHIP", "Event"),
+    ("CELEBRITY CHEF COOKOFF", "Event"),
+    ("PROFESSIONAL GOLF TOURNAMENT PLAYOFF", "Event"),
+    ("COLONIAL REENACTMENT FESTIVAL", "Event"),
+    ("COMPETITIVE ROBOTICS TOURNAMENT", "Event"),
+    ("ROYAL GUARD CHANGING CEREMONY", "Event"),
+
+    # -- new: 700+ --
+    ("SYNCHRONIZED SWIMMING GALA", "Event"),
+    ("PROFESSIONAL BULL RIDING CHAMPIONSHIP", "Event"),
+    ("INTERNATIONAL FILM DOCUMENTARY FESTIVAL", "Event"),
+    ("EXTREME SKYDIVING WORLD CHAMPIONSHIP", "Event"),
+    ("COMPETITIVE CRYPTOGRAPHY OLYMPIAD", "Event"),
+
+    # -------------------------------------------------------------------------
+    # Around the House (100 total)
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("KITCHEN SINK", "Around the House"),
     ("LIVING ROOM COUCH", "Around the House"),
     ("MASTER BEDROOM", "Around the House"),
@@ -215,7 +805,90 @@ PUZZLES = [
     ("SUNROOM", "Around the House"),
     ("CRAWL SPACE", "Around the House"),
 
-    # What Are You Doing?
+    # -- new: 0-200 --
+    ("THE BACK DOOR", "Around the House"),
+    ("COAT HOOK", "Around the House"),
+    ("HALL TREE", "Around the House"),
+    ("THE FRONT STEP", "Around the House"),
+    ("BATH TUB", "Around the House"),
+    ("THE SOCK DRAWER", "Around the House"),
+    ("SHED DOOR", "Around the House"),
+    ("TOOL SHED", "Around the House"),
+    ("BACK FENCE", "Around the House"),
+    ("SIDE GATE", "Around the House"),
+    ("STORM DOOR", "Around the House"),
+    ("SCREEN DOOR", "Around the House"),
+    ("FRONT STOOP", "Around the House"),
+    ("MAIL SLOT", "Around the House"),
+    ("THE HALL CLOSET", "Around the House"),
+    ("CELLAR DOOR", "Around the House"),
+    ("THE BACK PORCH", "Around the House"),
+    ("RAIN GUTTER", "Around the House"),
+    ("WINDOW LEDGE", "Around the House"),
+    ("THE HOT TUB", "Around the House"),
+
+    # -- new: 200-350 --
+    ("GUEST ROOM BED", "Around the House"),
+    ("UNDER THE BED", "Around the House"),
+    ("TOP OF THE FRIDGE", "Around the House"),
+    ("BEHIND THE COUCH", "Around the House"),
+    ("UNDER THE SINK", "Around the House"),
+    ("THE JUNK ROOM", "Around the House"),
+    ("BACK OF THE FRIDGE", "Around the House"),
+    ("THE GARDEN SHED", "Around the House"),
+    ("FRONT HALL MIRROR", "Around the House"),
+    ("LAUNDRY ROOM FLOOR", "Around the House"),
+    ("BOTTOM OF THE STAIRS", "Around the House"),
+    ("THE CORKBOARD", "Around the House"),
+    ("SPICE CABINET", "Around the House"),
+    ("UNDER THE DECK", "Around the House"),
+    ("THE STORM CELLAR", "Around the House"),
+    ("GARAGE WORKBENCH", "Around the House"),
+    ("GARDEN GATE", "Around the House"),
+    ("THE BACK BEDROOM", "Around the House"),
+    ("BATHROOM FLOOR DRAIN", "Around the House"),
+
+    # -- new: 350-500 --
+    ("BUILT IN BOOKCASE", "Around the House"),
+    ("MUDROOM COAT RACK", "Around the House"),
+    ("UNDER STAIR STORAGE", "Around the House"),
+    ("BATHROOM EXHAUST FAN", "Around the House"),
+    ("KITCHEN ISLAND COUNTER", "Around the House"),
+    ("SCREENED PORCH CEILING", "Around the House"),
+    ("OUTDOOR SHOWER STALL", "Around the House"),
+    ("READING NOOK CUSHION", "Around the House"),
+    ("SMOKE ALARM BATTERY", "Around the House"),
+    ("BROKEN PORCH RAILING", "Around the House"),
+    ("THE OVERFLOW PARKING PAD", "Around the House"),
+    ("MASTER BATH SOAKING TUB", "Around the House"),
+    ("SECOND FLOOR LANDING", "Around the House"),
+    ("BASEMENT STORAGE ROOM", "Around the House"),
+    ("CONVERTED GARAGE STUDIO", "Around the House"),
+
+    # -- new: 500-700 --
+    ("CROWN MOLDING IN THE DINING ROOM", "Around the House"),
+    ("OVERGROWN WALKWAY TO THE SHED", "Around the House"),
+    ("DRYER VENT CLOGGED WITH LINT", "Around the House"),
+    ("CRACKED TILE BEHIND THE STOVE", "Around the House"),
+    ("LEAKY FAUCET IN THE BASEMENT SINK", "Around the House"),
+    ("BROKEN DRAWER SLIDE IN THE KITCHEN", "Around the House"),
+    ("STUCK WINDOW IN THE BACK BEDROOM", "Around the House"),
+    ("COBWEBS IN THE CORNER OF THE GARAGE", "Around the House"),
+    ("WATER STAIN ON THE BEDROOM CEILING", "Around the House"),
+    ("SQUEAKY FLOORBOARD IN THE HALLWAY", "Around the House"),
+
+    # -- new: 700+ --
+    ("PEELING WALLPAPER IN THE POWDER ROOM", "Around the House"),
+    ("CRUMBLING GROUT BETWEEN BATHROOM TILES", "Around the House"),
+    ("EXPOSED COPPER PLUMBING IN THE CRAWL SPACE", "Around the House"),
+    ("FLICKERING PORCH LIGHT FIXTURE", "Around the House"),
+    ("CORRODED BATTERY TERMINALS IN THE SMOKE ALARM", "Around the House"),
+
+    # -------------------------------------------------------------------------
+    # What Are You Doing? (100 total)
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("TAKING A BUBBLE BATH", "What Are You Doing?"),
     ("WALKING THE DOG", "What Are You Doing?"),
     ("MAKING BREAKFAST", "What Are You Doing?"),
@@ -242,7 +915,91 @@ PUZZLES = [
     ("PRESSING WILDFLOWERS", "What Are You Doing?"),
     ("WRITING IN A JOURNAL", "What Are You Doing?"),
 
-    # Occupation
+    # -- new: 0-200 --
+    ("TAKING A NAP", "What Are You Doing?"),
+    ("EATING LUNCH", "What Are You Doing?"),
+    ("CALLING MOM", "What Are You Doing?"),
+    ("PETTING THE CAT", "What Are You Doing?"),
+    ("FOLDING LAUNDRY", "What Are You Doing?"),
+    ("DOING THE DISHES", "What Are You Doing?"),
+    ("PACKING A SUITCASE", "What Are You Doing?"),
+    ("TAKING A SELFIE", "What Are You Doing?"),
+    ("CHECKING THE MAIL", "What Are You Doing?"),
+    ("WATERING THE PLANTS", "What Are You Doing?"),
+    ("BLOWING BUBBLES", "What Are You Doing?"),
+    ("CATCHING FIREFLIES", "What Are You Doing?"),
+    ("ROLLING DOWN A HILL", "What Are You Doing?"),
+    ("SKIPPING STONES", "What Are You Doing?"),
+    ("FLYING A KITE", "What Are You Doing?"),
+    ("DIGGING A HOLE", "What Are You Doing?"),
+    ("PICKING APPLES", "What Are You Doing?"),
+    ("RAKING LEAVES", "What Are You Doing?"),
+    ("SHOVELING SNOW", "What Are You Doing?"),
+    ("PLANTING SEEDS", "What Are You Doing?"),
+
+    # -- new: 200-350 --
+    ("PERFORMING CPR ON A DUMMY", "What Are You Doing?"),
+    ("UNTANGLING CHRISTMAS LIGHTS", "What Are You Doing?"),
+    ("BUILDING A BLANKET FORT", "What Are You Doing?"),
+    ("LEARNING TO RIDE A BIKE", "What Are You Doing?"),
+    ("SOLVING A CROSSWORD PUZZLE", "What Are You Doing?"),
+    ("DEBUGGING COMPUTER CODE", "What Are You Doing?"),
+    ("RESTORING AN OLD PHOTO", "What Are You Doing?"),
+    ("REPOTTING THE SUCCULENTS", "What Are You Doing?"),
+    ("SKETCHING THE NEIGHBORHOOD", "What Are You Doing?"),
+    ("TRAINING FOR A TRIATHLON", "What Are You Doing?"),
+    ("REFINISHING THE HARDWOOD FLOORS", "What Are You Doing?"),
+    ("DECLUTTERING THE BASEMENT", "What Are You Doing?"),
+    ("COMPOSTING KITCHEN SCRAPS", "What Are You Doing?"),
+    ("WINDOW SHOPPING DOWNTOWN", "What Are You Doing?"),
+    ("BALANCING THE CHECKBOOK", "What Are You Doing?"),
+    ("STUDYING FOR THE BAR EXAM", "What Are You Doing?"),
+    ("CAULKING THE BATHTUB", "What Are You Doing?"),
+    ("STEAM CLEANING THE CARPETS", "What Are You Doing?"),
+    ("WEATHERPROOFING THE WINDOWS", "What Are You Doing?"),
+    ("SHARPENING ALL THE KNIVES", "What Are You Doing?"),
+
+    # -- new: 350-500 --
+    ("EAVESDROPPING ON THE NEIGHBORS", "What Are You Doing?"),
+    ("ALPHABETIZING THE SPICE RACK", "What Are You Doing?"),
+    ("PARALLEL PARKING A MOVING TRUCK", "What Are You Doing?"),
+    ("CATALOGUING THE RECORD COLLECTION", "What Are You Doing?"),
+    ("REWIRING AN OLD LAMP", "What Are You Doing?"),
+    ("WATCHING THE STOCK TICKER", "What Are You Doing?"),
+    ("PRACTICING THE ACCEPTANCE SPEECH", "What Are You Doing?"),
+    ("FOLLOWING A COMPLICATED RECIPE", "What Are You Doing?"),
+    ("ASSEMBLING FLAT PACK FURNITURE", "What Are You Doing?"),
+    ("NARRATING YOUR OWN LIFE", "What Are You Doing?"),
+    ("PHOTOGRAPHING THE NEIGHBORHOOD", "What Are You Doing?"),
+    ("SCHEDULING BACK TO BACK MEETINGS", "What Are You Doing?"),
+    ("POWER WASHING THE DRIVEWAY", "What Are You Doing?"),
+    ("LAMINATING EVERYTHING IN SIGHT", "What Are You Doing?"),
+    ("PRETENDING TO WORK FROM HOME", "What Are You Doing?"),
+
+    # -- new: 500-700 --
+    ("REPLACING THE CARBURETOR IN THE TRUCK", "What Are You Doing?"),
+    ("CATALOGUING THE BUTTERFLY COLLECTION", "What Are You Doing?"),
+    ("NEGOTIATING A HOSTAGE SITUATION", "What Are You Doing?"),
+    ("TRANSLATING AN ANCIENT MANUSCRIPT", "What Are You Doing?"),
+    ("EXPLAINING QUANTUM PHYSICS TO A CHILD", "What Are You Doing?"),
+    ("OVERHAULING THE FILING SYSTEM", "What Are You Doing?"),
+    ("REWATCHING THE SAME DOCUMENTARY", "What Are You Doing?"),
+    ("CALCULATING THE TIP ON A LARGE GROUP BILL", "What Are You Doing?"),
+    ("DEFENDING YOUR DOCTORAL THESIS", "What Are You Doing?"),
+    ("PERFORMING IN THE SCHOOL TALENT SHOW", "What Are You Doing?"),
+
+    # -- new: 700+ --
+    ("DEBUGGING THE NETWORK CONFIGURATION", "What Are You Doing?"),
+    ("RECALIBRATING THE TELESCOPE MOUNT", "What Are You Doing?"),
+    ("DECOMPRESSING A ZIPPED ARCHIVE FOLDER", "What Are You Doing?"),
+    ("PERFORMING EXPLORATORY ABDOMINAL SURGERY", "What Are You Doing?"),
+    ("BENCHMARKING THE NEW COMPUTER BUILD", "What Are You Doing?"),
+
+    # -------------------------------------------------------------------------
+    # Occupation (100 total)
+    # -------------------------------------------------------------------------
+
+    # -- existing --
     ("AIR TRAFFIC CONTROLLER", "Occupation"),
     ("SUBMARINE COMMANDER", "Occupation"),
     ("FORENSIC ACCOUNTANT", "Occupation"),
@@ -268,4 +1025,163 @@ PUZZLES = [
     ("HAND MODEL", "Occupation"),
     ("VOICE ACTOR", "Occupation"),
     ("ETHICAL HACKER", "Occupation"),
+
+    # -- new: 0-200 --
+    ("SCHOOL BUS DRIVER", "Occupation"),
+    ("MAIL CARRIER", "Occupation"),
+    ("TOLL BOOTH OPERATOR", "Occupation"),
+    ("FIRE LOOKOUT", "Occupation"),
+    ("PARK RANGER", "Occupation"),
+    ("SIGN PAINTER", "Occupation"),
+    ("GOLF CADDIE", "Occupation"),
+    ("HORSE TRAINER", "Occupation"),
+    ("BIKE MESSENGER", "Occupation"),
+    ("STREET PERFORMER", "Occupation"),
+    ("POOL LIFEGUARD", "Occupation"),
+    ("HALL MONITOR", "Occupation"),
+    ("SHIP CAPTAIN", "Occupation"),
+    ("TOLL COLLECTOR", "Occupation"),
+    ("TREE SURGEON", "Occupation"),
+    ("ESTATE SALE HOST", "Occupation"),
+    ("NOON BELL RINGER", "Occupation"),
+    ("TRAIN CONDUCTOR", "Occupation"),
+    ("NIGHT WATCHMAN", "Occupation"),
+    ("CROP DUSTER PILOT", "Occupation"),
+
+    # -- new: 200-350 --
+    ("CRIME SCENE CLEANER", "Occupation"),
+    ("CONFLICT MEDIATOR", "Occupation"),
+    ("ANIMAL CONTROL OFFICER", "Occupation"),
+    ("COURT REPORTER", "Occupation"),
+    ("SLEEP TECHNOLOGIST", "Occupation"),
+    ("FUNERAL HOME DIRECTOR", "Occupation"),
+    ("CHILDRENS BOOK ILLUSTRATOR", "Occupation"),
+    ("CAVE TOUR GUIDE", "Occupation"),
+    ("ROLLER DERBY COACH", "Occupation"),
+    ("POLITICAL CARTOONIST", "Occupation"),
+    ("CANINE SEARCH AND RESCUE", "Occupation"),
+    ("BUILDING INSPECTOR", "Occupation"),
+    ("SPORTS PHOTOGRAPHER", "Occupation"),
+    ("FISH HATCHERY MANAGER", "Occupation"),
+    ("STORM DRAIN INSPECTOR", "Occupation"),
+    ("SMOKE JUMPER", "Occupation"),
+    ("BORDER PATROL AGENT", "Occupation"),
+    ("HARBOR MASTER", "Occupation"),
+    ("SIGN LANGUAGE INTERPRETER", "Occupation"),
+    ("PROFESSIONAL CUDDLER", "Occupation"),
+
+    # -- new: 350-500 --
+    ("COMPETITIVE EATING CHAMPION", "Occupation"),
+    ("BOMB DISPOSAL TECHNICIAN", "Occupation"),
+    ("PROFESSIONAL GENEALOGIST", "Occupation"),
+    ("FORENSIC SKETCH ARTIST", "Occupation"),
+    ("COMPETITIVE INTELLIGENCE ANALYST", "Occupation"),
+    ("MOUNTAIN RESCUE COORDINATOR", "Occupation"),
+    ("WILDLIFE CORRIDOR PLANNER", "Occupation"),
+    ("THEATRICAL FIGHT CHOREOGRAPHER", "Occupation"),
+    ("COMPETITIVE MEMORY CHAMPION", "Occupation"),
+    ("PROFESSIONAL WHISTLEBLOWER", "Occupation"),
+    ("LIVESTOCK EMBRYO TRANSFER SPECIALIST", "Occupation"),
+    ("PROFESSIONAL POKER PLAYER", "Occupation"),
+    ("UNDERWATER WELDER", "Occupation"),
+    ("SPACE DEBRIS TRACKER", "Occupation"),
+    ("COMPETITIVE SCRABBLE PLAYER", "Occupation"),
+
+    # -- new: 500-700 --
+    ("GRAFFITI REMOVAL SPECIALIST", "Occupation"),
+    ("NEUROFEEDBACK THERAPIST", "Occupation"),
+    ("PROFESSIONAL BRIDESMAID", "Occupation"),
+    ("DEMOLITION DERBY DRIVER", "Occupation"),
+    ("COMPETITIVE EYELASH EXTENSION TECHNICIAN", "Occupation"),
+    ("PROFESSIONAL FOLEY ARTIST", "Occupation"),
+    ("FORENSIC ENTOMOLOGIST", "Occupation"),
+    ("AVALANCHE FORECASTER", "Occupation"),
+    ("COMPETITIVE BALLROOM DANCE JUDGE", "Occupation"),
+    ("PROFESSIONAL TONGUE TASTE TESTER", "Occupation"),
+
+    # -- new: 700+ --
+    ("BOMB SQUAD TECHNICIAN", "Occupation"),
+    ("CRYPTOZOOLOGIST", "Occupation"),
+    ("PROFESSIONAL COMPETITIVE PUZZLER", "Occupation"),
+    ("INTERPLANETARY GEOLOGICAL SURVEYOR", "Occupation"),
+    ("BIOLUMINESCENT ORGANISM RESEARCHER", "Occupation"),
+
+    # -------------------------------------------------------------------------
+    # Gap-filling additions to reach 100 per category
+    # -------------------------------------------------------------------------
+
+    # Around the House
+    ("CABINET HARDWARE DRAWER", "Around the House"),
+    ("THE RECYCLING BIN", "Around the House"),
+    ("UNDER THE PORCH", "Around the House"),
+    ("WOOD BURNING STOVE", "Around the House"),
+    ("THE BACK STAIRCASE", "Around the House"),
+    ("FRONT YARD FIRE HYDRANT", "Around the House"),
+
+    # Event
+    ("CHORAL CONCERT", "Event"),
+    ("CRAFT BEER FESTIVAL", "Event"),
+    ("ANTIQUE ROAD SHOW", "Event"),
+    ("DEMOLITION SALE", "Event"),
+    ("PANCAKE BREAKFAST FUNDRAISER", "Event"),
+
+    # Food & Drink
+    ("WALNUT BROWNIE", "Food & Drink"),
+    ("SOFT PRETZEL", "Food & Drink"),
+    ("MAPLE BACON DONUT", "Food & Drink"),
+    ("SMOKED GOUDA GRILLED CHEESE", "Food & Drink"),
+    ("BUTTERSCOTCH PUDDING", "Food & Drink"),
+
+    # Occupation
+    ("ROPE ACCESS TECHNICIAN", "Occupation"),
+    ("PROFESSIONAL MOURNER", "Occupation"),
+    ("COMPETITIVE DUCK HERDER", "Occupation"),
+    ("NUCLEAR SUBMARINE COOK", "Occupation"),
+    ("PROFESSIONAL LINE SITTER", "Occupation"),
+
+    # Phrase
+    ("WOLF IN SHEEPS CLOTHING", "Phrase"),
+    ("THE LAST STRAW", "Phrase"),
+    ("BURN THE MIDNIGHT OIL", "Phrase"),
+    ("A BLESSING IN DISGUISE", "Phrase"),
+    ("THROUGH THICK AND THIN", "Phrase"),
+
+    # Place
+    ("SUPPLY CLOSET", "Place"),
+    ("THE WAITING ROOM", "Place"),
+    ("BACK NINE OF THE GOLF COURSE", "Place"),
+    ("THE PENALTY BOX", "Place"),
+    ("LOST LUGGAGE AREA", "Place"),
+    ("HOLDING PATTERN ABOVE THE AIRPORT", "Place"),
+
+    # Proper Name
+    ("HARRIET BEECHER STOWE", "Proper Name"),
+    ("SITTING BULL", "Proper Name"),
+    ("GERONIMO", "Proper Name"),
+    ("POCAHONTAS", "Proper Name"),
+    ("CRAZY HORSE", "Proper Name"),
+
+    # Proper Place
+    ("MOUNT SAINT HELENS", "Proper Place"),
+    ("CAPE HATTERAS", "Proper Place"),
+    ("LAKE MICHIGAN", "Proper Place"),
+    ("MOJAVE DESERT", "Proper Place"),
+    ("GULF OF MEXICO", "Proper Place"),
+    ("ROCKY MOUNTAIN NATIONAL PARK", "Proper Place"),
+    ("SHENANDOAH VALLEY", "Proper Place"),
+    ("CONNECTICUT RIVER VALLEY", "Proper Place"),
+
+    # Thing
+    ("HALL MIRROR", "Thing"),
+    ("BELT BUCKLE", "Thing"),
+    ("PHONE CHARGER", "Thing"),
+    ("PILL BOTTLE", "Thing"),
+    ("SCREEN DOOR HANDLE", "Thing"),
+
+    # What Are You Doing?
+    ("SITTING IN TRAFFIC", "What Are You Doing?"),
+    ("FILING YOUR TAXES", "What Are You Doing?"),
+    ("AVOIDING EYE CONTACT", "What Are You Doing?"),
+    ("OVERTHINKING EVERYTHING", "What Are You Doing?"),
+    ("PRETENDING TO BE BUSY", "What Are You Doing?"),
 ]
