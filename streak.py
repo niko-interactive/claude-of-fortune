@@ -3,28 +3,16 @@ import pygame
 
 class Streak:
     """
-    Tracks the player's current win streak across rounds.
-    Persists between rounds and is never reset by reset_game —
-    only a loss resets the count.
+    Draws the streak counter and coin balance in the top left corner.
+    State (count, money) is owned by GameManager — this class only handles display.
     """
 
     def __init__(self, font):
         self.font = font
-        self.count = 0     # Current active streak
-        self.previous = 0  # Streak count before the last loss, used in the lose popup
 
-    def win(self):
-        """Increment the streak by one after a win."""
-        self.count += 1
-
-    def lose(self):
-        """Save the current streak then reset it to zero after a loss."""
-        self.previous = self.count
-        self.count = 0
-
-    def draw(self, screen, money):
-        """Draw the streak counter and coin balance in the top left corner."""
-        streak_surface = self.font.render(f'STREAK  {self.count}', True, 'white')
+    def draw(self, screen, streak_count, money):
+        """Draw the streak counter and coin balance."""
+        streak_surface = self.font.render(f'STREAK  {streak_count}', True, 'white')
         screen.blit(streak_surface, (20, 20))
 
         money_surface = self.font.render(f'${money}', True, 'white')

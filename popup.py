@@ -17,19 +17,49 @@ class Popup:
                  phrase='', streak=None, game_complete=False):
         self.font = font
         self.small_font = pygame.font.SysFont('Arial', 22)
-        self.message = message      # 'You Win!', 'You Lose!', or 'You Beat the Game!'
-        self.phrase = phrase        # The secret phrase revealed at round end
-        self.streak = streak        # Final streak count, only passed on a loss
-        self.game_complete = game_complete  # True for the all-puzzles-cleared screen
+        self.message = message
+        self.phrase = phrase
+        self.streak = streak
+        self.game_complete = game_complete
 
-        # Center the popup box on screen — taller for game_complete
-        self.rect = pygame.Rect(0, 0, 600, 250)
+        popup_width = 600
+        padding = 40
+        self.max_text_width = popup_width - padding * 2
+
+        # Pre-wrap the phrase into lines that fit the popup width
+        self.phrase_lines = self._wrap_text(phrase, self.font, self.max_text_width)
+
+        # Calculate height dynamically based on content
+        phrase_height = len(self.phrase_lines) * (self.font.get_height() + 4)
+        streak_height = (self.font.get_height() + 10) if streak is not None else 0
+        content_height = 30 + self.font.get_height() + 10 + phrase_height + streak_height + 20
+        total_height = max(250, content_height + 63)  # 63 = button height + margins
+
+        self.rect = pygame.Rect(0, 0, popup_width, total_height)
         self.rect.center = (screen_width // 2, screen_height // 2)
 
-        # Play Again button positioned at the bottom of the popup
         self.button_rect = pygame.Rect(0, 0, 160, 48)
         self.button_rect.centerx = self.rect.centerx
         self.button_rect.bottom = self.rect.bottom - 15
+
+    def _wrap_text(self, text, font, max_width):
+        """Split text into lines that fit within max_width pixels."""
+        if not text:
+            return []
+        words = text.split(' ')
+        lines = []
+        current_line = []
+        for word in words:
+            test_line = ' '.join(current_line + [word])
+            if font.size(test_line)[0] <= max_width:
+                current_line.append(word)
+            else:
+                if current_line:
+                    lines.append(' '.join(current_line))
+                current_line = [word]
+        if current_line:
+            lines.append(' '.join(current_line))
+        return lines
 
     def handle_click(self, pos):
         """Return True if the Play Again button was clicked."""
@@ -65,16 +95,18 @@ class Popup:
                 screen.blit(streak_surface, streak_rect)
 
         else:
-            # Secret phrase shown in grey below the message
-            phrase_surface = self.font.render(self.phrase, True, 'grey')
-            phrase_rect = phrase_surface.get_rect(centerx=self.rect.centerx, top=next_top)
-            screen.blit(phrase_surface, phrase_rect)
+            # Secret phrase shown in grey below the message, wrapped to fit
+            y = next_top
+            for line in self.phrase_lines:
+                line_surface = self.font.render(line, True, 'grey')
+                line_rect = line_surface.get_rect(centerx=self.rect.centerx, top=y)
+                screen.blit(line_surface, line_rect)
+                y += self.font.get_height() + 4
 
             # Final streak count
             if self.streak is not None:
                 streak_surface = self.font.render(f'Streak: {self.streak}', True, 'white')
-                streak_rect = streak_surface.get_rect(centerx=self.rect.centerx,
-                                                      top=phrase_rect.bottom + 10)
+                streak_rect = streak_surface.get_rect(centerx=self.rect.centerx, top=y + 6)
                 screen.blit(streak_surface, streak_rect)
 
         # Play Again button
