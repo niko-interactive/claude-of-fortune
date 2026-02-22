@@ -44,7 +44,7 @@ class GameManager:
         # Run state — persists until a loss
         self.streak_count = 0
         self.previous_streak = 0   # Streak before last loss, used in lose popup
-        self.money = 1000
+        self.money = 0
         self.purchased_upgrades = set()  # ids of permanently owned upgrades
 
         # Round state — rebuilt each round
