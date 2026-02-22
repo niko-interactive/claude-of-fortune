@@ -99,6 +99,8 @@ The game includes ~1,000 puzzles across 10 categories:
 
 > The security warning appears because the app is not signed with a certificate. This is normal for independent projects.
 
+> The security warning appears because the app is not signed with a certificate. This is normal for independent projects.
+
 ### Mac
 
 1. Go to the [Releases](../../releases) page
