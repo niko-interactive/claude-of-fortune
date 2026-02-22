@@ -5,25 +5,30 @@ from constants import LETTER_SLOT_WIDTH, LETTER_SLOT_HEIGHT, GAP
 class Strikes:
     """
     Tracks and displays the player's strikes for the current round.
-    Shows a row of X marks in the top right corner — white for remaining
-    strikes and red for used ones. Max strikes can increase via upgrades.
+    Shows a row of X marks in the top right corner:
+      - Green X's on the left for bonus strikes (extra lives from consumables)
+      - White X's for remaining regular strikes
+      - Red X's for used regular strikes
+
+    Max strikes can increase via upgrades. Bonus strike count is passed in
+    at draw time and owned by GameManager.
     """
 
     def __init__(self, font, screen_width, max_strikes=3):
         self.font = font
-        self.max_strikes = max_strikes  # 3 by default, can be 4 or 5 with upgrades
-        self.count = 0                  # Number of strikes used so far this round
+        self.screen_width = screen_width
+        self.max_strikes = max_strikes
+        self.count = 0
 
-        # Position the row of X marks flush to the top right of the screen
-        total_width = max_strikes * LETTER_SLOT_WIDTH + (max_strikes - 1) * GAP
-        start_x = screen_width - total_width - 20
+    def _build_slots(self, num_slots):
+        """Build a list of rects for num_slots X marks, flush to the top right."""
+        total_width = num_slots * LETTER_SLOT_WIDTH + (num_slots - 1) * GAP
+        start_x = self.screen_width - total_width - 20
         y = 20
-
-        # Build a rect for each strike position to use as a drawing reference
-        self.letter_slots = []
-        for i in range(max_strikes):
-            x = start_x + i * (LETTER_SLOT_WIDTH + GAP)
-            self.letter_slots.append(pygame.Rect(x, y, LETTER_SLOT_WIDTH, LETTER_SLOT_HEIGHT))
+        return [
+            pygame.Rect(start_x + i * (LETTER_SLOT_WIDTH + GAP), y, LETTER_SLOT_WIDTH, LETTER_SLOT_HEIGHT)
+            for i in range(num_slots)
+        ]
 
     def add_strike(self):
         """Add one strike after a wrong guess."""
@@ -33,13 +38,21 @@ class Strikes:
         """Return True if the player has used all their strikes."""
         return self.count >= self.max_strikes
 
-    def draw(self, screen):
+    def draw(self, screen, bonus_strikes=0):
         """
-        Draw one X per strike slot. Used strikes render in red,
-        remaining strikes render in white.
+        Draw all X marks. Bonus strikes appear as green X's on the left,
+        followed by the regular strike slots (red for used, white for remaining).
+        The total row width expands to accommodate bonus strikes.
         """
-        for i, rect in enumerate(self.letter_slots):
-            color = 'red' if i < self.count else 'white'
+        total_slots = bonus_strikes + self.max_strikes
+        slots = self._build_slots(total_slots)
+
+        for i, rect in enumerate(slots):
+            if i < bonus_strikes:
+                color = 'green'
+            elif i - bonus_strikes < self.count:
+                color = 'red'
+            else:
+                color = 'white'
             surface = self.font.render('X', True, color)
-            x_rect = surface.get_rect(center=rect.center)
-            screen.blit(surface, x_rect)
+            screen.blit(surface, surface.get_rect(center=rect.center))

@@ -44,7 +44,7 @@ class GameManager:
         # Run state — persists until a loss
         self.streak_count = 0
         self.previous_streak = 0   # Streak before last loss, used in lose popup
-        self.money = 0
+        self.money = 1000
         self.purchased_upgrades = set()  # ids of permanently owned upgrades
 
         # Round state — rebuilt each round
@@ -52,6 +52,8 @@ class GameManager:
         self.alphabet = None
         self.strikes = None
         self.topic = None
+        self.free_guess_active = False  # Consumed on any guess, right or wrong
+        self.bonus_strikes = 0          # Extra lives consumed only on wrong guesses
 
         # Pool state
         self.seen_puzzles = set()
@@ -90,7 +92,7 @@ class GameManager:
         self.seen_puzzles.add(self.phrase.word)
         self.streak_count += 1
         difficulty = self._calculate_difficulty(self.phrase.word, self.topic.topic)
-        strikes_left = self.strikes.max_strikes - self.strikes.count
+        strikes_left = self.strikes.max_strikes - self.strikes.count  # bonus strikes excluded intentionally
         self.earn(difficulty, strikes_left)
         return self._advance_round()
 
@@ -183,10 +185,15 @@ class GameManager:
             self.phrase.guess(letter)
             self.alphabet.guess(letter)
 
+        self.free_guess_active = False
+        # bonus_strikes intentionally not reset here — carries over between rounds
+
         # Register consumable callbacks now that phrase and alphabet exist
         self.shop.on_reveal_consonant = self._reveal_consonant
         self.shop.on_reveal_vowel = self._reveal_vowel
         self.shop.on_eliminate_letters = self._eliminate_letters
+        self.shop.on_free_guess = self._grant_free_guess
+        self.shop.on_bonus_strike = self._grant_bonus_strike
 
     # --- Consumable Actions ---
     # Registered as callbacks on the shop so it can trigger them on purchase.
@@ -226,14 +233,34 @@ class GameManager:
         for c in choices:
             self.alphabet.guess(c)
 
+    def _grant_free_guess(self):
+        """Grant a free guess — will be consumed on the next guess regardless of outcome."""
+        self.free_guess_active = True
+
+    def _grant_bonus_strike(self):
+        """
+        Grant a bonus strike. If the player has used any strikes this round,
+        recover the most recent one (flip a red X back to white) rather than
+        adding a green X. Only adds a true bonus strike if no used strikes exist.
+        """
+        if self.strikes.count > 0:
+            self.strikes.count -= 1
+        else:
+            self.bonus_strikes += 1
+
     # --- Guess Handling ---
 
     def guess(self, letter):
         """
-        Process a letter guess. Returns 'solved', 'strike', or 'blocked'
-        (blocked = wrong guess absorbed by a free guess consumable).
-        Returns 'game_over' if the round ends on a strike.
+        Process a letter guess. Order of operations:
+        1. Free guess is consumed immediately on any guess, right or wrong.
+        2. If wrong: bonus strike absorbs the hit before a real strike is added.
+        Returns 'solved', 'correct', 'blocked' (free guess used),
+        'bonus_strike' (bonus absorbed the wrong guess), 'strike', or 'game_over'.
         """
+        free_guess_used = self.free_guess_active
+        self.free_guess_active = False
+
         matched = self.phrase.guess(letter)
         self.alphabet.guess(letter)
 
@@ -242,8 +269,12 @@ class GameManager:
                 return 'solved'
             return 'correct'
 
-        if self.shop.use_free_guess():
+        if free_guess_used:
             return 'blocked'
+
+        if self.bonus_strikes > 0:
+            self.bonus_strikes -= 1
+            return 'bonus_strike'
 
         self.strikes.add_strike()
         if self.strikes.is_game_over():
@@ -315,5 +346,5 @@ class GameManager:
         """Draw all round objects."""
         self.phrase.draw(screen)
         self.alphabet.draw(screen)
-        self.strikes.draw(screen)
+        self.strikes.draw(screen, self.bonus_strikes)
         self.topic.draw(screen)

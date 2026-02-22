@@ -105,7 +105,13 @@ CONSUMABLES = [
     {
         'id': 'free_guess',
         'label': 'Free Guess',
-        'description': 'Next wrong guess does not cost a strike',
+        'description': 'Next guess costs nothing, right or wrong',
         'cost': 50,
+    },
+    {
+        'id': 'bonus_strike',
+        'label': 'Bonus Strike',
+        'description': 'Absorbs one wrong guess before a real strike',
+        'cost': 75,
     },
 ]

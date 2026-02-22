@@ -29,7 +29,7 @@ class Shop:
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        self.free_guess_active = False   # True if a free guess consumable is active
+        self.free_guess_active = False   # kept temporarily for draw indicator — read from manager instead
         self.visible = False
         self.active_tab = 'upgrades'     # 'upgrades' or 'consumables'
 
@@ -43,6 +43,8 @@ class Shop:
         self.on_reveal_consonant = None
         self.on_reveal_vowel = None
         self.on_eliminate_letters = None
+        self.on_free_guess = None
+        self.on_bonus_strike = None
 
         # Set by main.py after GameManager is created
         self.manager = None
@@ -88,8 +90,8 @@ class Shop:
     # --- State ---
 
     def reset(self):
-        """Reset consumable state on a loss. Upgrades are reset by GameManager."""
-        self.free_guess_active = False
+        """Reset consumable state on a loss. Upgrades and round state reset by GameManager."""
+        pass
 
     def _visible_upgrades(self, purchased_upgrades):
         """Return upgrades that should be visible — prereq must be purchased first."""
@@ -104,11 +106,47 @@ class Shop:
             return False
         return True
 
-    def use_free_guess(self):
-        """Consume a free guess if active. Returns True if a strike should be blocked."""
-        if self.free_guess_active:
-            self.free_guess_active = False
-            return True
+    def _is_consumable_disabled(self, consumable_id):
+        """
+        Return True if a consumable should be blocked from purchase.
+        Checks both hard rules (caps, active state) and whether the effect
+        would actually do anything given the current phrase/alphabet state.
+        """
+        if not self.manager:
+            return False
+
+        if consumable_id == 'free_guess':
+            return self.manager.free_guess_active
+
+        if consumable_id == 'bonus_strike':
+            # Can always recover a used strike; cap only applies to true bonus strikes
+            if self.manager.strikes and self.manager.strikes.count > 0:
+                return False
+            return self.manager.bonus_strikes >= 3
+
+        # For the remaining consumables, check if there's anything left to act on
+        phrase = self.manager.phrase
+        alphabet = self.manager.alphabet
+        if phrase is None or alphabet is None:
+            return False
+
+        phrase_letters = set(phrase.word.replace(' ', ''))
+
+        if consumable_id == 'reveal_consonant':
+            hidden_consonants = phrase_letters & {'B','C','D','F','G','H','J','K','L','M',
+                                                  'N','P','Q','R','S','T','V','W','X','Y','Z'} \
+                                - alphabet.guessed
+            return len(hidden_consonants) == 0
+
+        if consumable_id == 'reveal_vowel':
+            hidden_vowels = phrase_letters & {'A','E','I','O','U'} - alphabet.guessed
+            return len(hidden_vowels) == 0
+
+        if consumable_id == 'eliminate_letters':
+            wrong_letters = [c for c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                             if c not in phrase.word and c not in alphabet.guessed]
+            return len(wrong_letters) == 0
+
         return False
 
     # --- Purchases ---
@@ -129,17 +167,21 @@ class Shop:
         consumable = next((c for c in CONSUMABLES if c['id'] == consumable_id), None)
         if not consumable:
             return False
+        if self._is_consumable_disabled(consumable_id):
+            return False
         if not self.manager.spend(consumable['cost']):
             return False
 
-        if consumable_id == 'reveal_consonant' and self.on_reveal_consonant:
-            self.on_reveal_consonant()
-        elif consumable_id == 'reveal_vowel' and self.on_reveal_vowel:
-            self.on_reveal_vowel()
-        elif consumable_id == 'eliminate_letters' and self.on_eliminate_letters:
-            self.on_eliminate_letters()
-        elif consumable_id == 'free_guess':
-            self.free_guess_active = True
+        callbacks = {
+            'reveal_consonant':  self.on_reveal_consonant,
+            'reveal_vowel':      self.on_reveal_vowel,
+            'eliminate_letters': self.on_eliminate_letters,
+            'free_guess':        self.on_free_guess,
+            'bonus_strike':      self.on_bonus_strike,
+        }
+        cb = callbacks.get(consumable_id)
+        if cb:
+            cb()
 
         return True
 
@@ -243,16 +285,12 @@ class Shop:
             y = i * ROW_HEIGHT
             is_upgrade = self.active_tab == 'upgrades'
 
-            if is_upgrade:
-                owned = item['id'] in purchased_upgrades
-                can_afford = money >= item['cost']
-                label_color = '#555555' if owned else 'white'
-            else:
-                owned = False
-                can_afford = money >= item['cost']
-                label_color = 'white'
+            owned = is_upgrade and item['id'] in purchased_upgrades
+            disabled = not is_upgrade and self._is_consumable_disabled(item['id'])
+            can_afford = money >= item['cost']
 
-            label_surf = self.small_font.render(item['label'], True, label_color)
+            # Labels always white, descriptions always grey regardless of state
+            label_surf = self.small_font.render(item['label'], True, 'white')
             desc_surf = self.small_font.render(item['description'], True, '#888888')
             content_surface.blit(label_surf, (20, y + 6))
             content_surface.blit(desc_surf, (20, y + 26))
@@ -263,7 +301,7 @@ class Shop:
 
             if owned:
                 btn_color, btn_text, text_color, border_color = '#333333', 'Owned', '#555555', '#555555'
-            elif not can_afford:
+            elif disabled or not can_afford:
                 btn_color, btn_text, text_color, border_color = '#222222', f'${item["cost"]}', '#555555', '#555555'
             else:
                 btn_color, btn_text, text_color, border_color = 'black', f'${item["cost"]}', 'white', 'white'
@@ -285,11 +323,22 @@ class Shop:
         screen.blit(content_surface, (self.popup_rect.left, self.content_top), visible_area)
 
     def draw(self, screen, money, purchased_upgrades):
-        """Draw the shop button and popup if visible."""
+        """Draw the shop button, active consumable status, and popup if visible."""
         pygame.draw.rect(screen, 'black', self.button_rect)
         pygame.draw.rect(screen, 'white', self.button_rect, 2)
         btn_surface = self.font.render('Shop', True, 'white')
         screen.blit(btn_surface, btn_surface.get_rect(center=self.button_rect.center))
+
+        # Active consumable status shown below the shop button on the main screen
+        if self.manager:
+            status_y = self.button_rect.bottom + 6
+            if self.manager.free_guess_active:
+                fg_surf = self.small_font.render('FREE GUESS ACTIVE', True, 'green')
+                screen.blit(fg_surf, fg_surf.get_rect(centerx=self.button_rect.centerx, top=status_y))
+                status_y += fg_surf.get_height() + 2
+            if self.manager.bonus_strikes > 0:
+                bs_surf = self.small_font.render(f'BONUS STRIKES: {self.manager.bonus_strikes}', True, 'green')
+                screen.blit(bs_surf, bs_surf.get_rect(centerx=self.button_rect.centerx, top=status_y))
 
         if not self.visible:
             return
@@ -330,11 +379,6 @@ class Shop:
             bar_y = self.content_top + int((scroll / max_scroll) * (self.content_height - bar_height))
             bar_rect = pygame.Rect(self.popup_rect.right - 7, bar_y, 4, bar_height)
             pygame.draw.rect(screen, '#555555', bar_rect, border_radius=2)
-
-        # Free guess indicator
-        if self.free_guess_active:
-            fg_surf = self.small_font.render('FREE GUESS ACTIVE', True, 'green')
-            screen.blit(fg_surf, (self.popup_rect.left + 20, self.popup_rect.bottom - 55))
 
         # Close button — drawn after set_clip(None) so it's never clipped
         pygame.draw.rect(screen, 'black', self.close_rect)
