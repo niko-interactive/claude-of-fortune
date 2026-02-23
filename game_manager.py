@@ -49,7 +49,7 @@ class GameManager:
 
         # Meta state — never resets on loss
         self.total_rounds_completed = 0
-        self.stars = 7                      # Earned 1 per 10 rounds completed in a single streak
+        self.stars = 0                      # Earned 1 per 10 rounds completed in a single streak
         self.secret_shop_unlocked = False   # Costs 5 stars; permanent once bought
         self._stars_display_unlocked = False  # Backing field — use stars_display_unlocked property
 
