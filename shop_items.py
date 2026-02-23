@@ -115,3 +115,16 @@ CONSUMABLES = [
         'cost': 75,
     },
 ]
+
+# --- Prestige Shop Definitions ---
+# Items in the prestige shop cost stars (*) or money ($).
+# currency: 'stars' | 'money'
+PRESTIGE_ITEMS = [
+    {
+        'id':          'placeholder',
+        'label':       'Placeholder',
+        'description': 'A mysterious item. More to come.',
+        'cost':        2,
+        'currency':    'stars',
+    },
+]

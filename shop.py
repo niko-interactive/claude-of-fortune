@@ -1,7 +1,6 @@
 import pygame
 
-from shop_items import UPGRADES, CONSUMABLES
-from secret_shop_items import SECRET_ITEMS
+from shop_items import UPGRADES, CONSUMABLES, PRESTIGE_ITEMS
 
 
 ROW_HEIGHT = 52
@@ -16,7 +15,7 @@ class Shop:
     Consumables are purchased and used immediately.
     Prestige items cost stars (*) and are permanently unlocked across losses.
 
-    The secret tab is invisible until the player has at least 1 star, then visible
+    The prestige tab is invisible until the player has at least 1 star, then visible
     but locked. Clicking it while locked spends 5 stars to unlock it permanently.
     Once unlocked, it behaves like a normal tab.
 
@@ -37,13 +36,13 @@ class Shop:
 
         self.free_guess_active = False   # kept temporarily for draw indicator — read from manager instead
         self.visible = False
-        self.active_tab = 'upgrades'     # 'upgrades', 'consumables', or 'secret'
+        self.active_tab = 'upgrades'     # 'upgrades', 'consumables', or 'prestige'
 
         # Per-tab scroll offsets in pixels — add a key here when adding a new tab
         self.scroll_offsets = {
             'upgrades':    0,
             'consumables': 0,
-            'secret':      0,
+            'prestige':      0,
         }
 
         # Set by GameManager each round — called when a consumable is purchased
@@ -61,7 +60,7 @@ class Shop:
         self.popup_rect.center = (screen_width // 2, screen_height // 2)
 
         # Tab dimensions — rects are computed dynamically in _build_tab_rects()
-        # so that the visible tabs stay centred whether the secret tab is shown or not.
+        # so that the visible tabs stay centred whether the prestige tab is shown or not.
         self.tab_width  = 140
         self.tab_height = 36
         self.tab_gap    = 16
@@ -91,27 +90,27 @@ class Shop:
         self.active_tab = 'upgrades'
         self.scroll_offsets = {k: 0 for k in self.scroll_offsets}
 
-    def _secret_visible(self):
+    def _prestige_visible(self):
         """
         Prestige tab appears after the player has prestiged at least once.
         Once visible it never disappears.
         """
         return self.manager and self.manager.prestige_count >= 1
 
-    def _secret_unlocked(self):
+    def _prestige_unlocked(self):
         """Prestige tab is always enterable once visible (after first prestige)."""
-        return self._secret_visible()
+        return self._prestige_visible()
 
 
     def _build_tab_rects(self):
         """
         Build and return tab rects centred in the popup for however many tabs are
         currently visible. Always includes upgrades and consumables. Adds secret
-        only when _secret_visible() is True, keeping visible tabs centred whether
-        or not the secret tab has appeared yet.
+        only when _prestige_visible() is True, keeping visible tabs centred whether
+        or not the prestige tab has appeared yet.
         """
         visible_tabs = ["upgrades", "consumables"]
-        if self._secret_visible():
+        if self._prestige_visible():
             visible_tabs.append("secret")
         n = len(visible_tabs)
         total_width = self.tab_width * n + self.tab_gap * (n - 1)
@@ -221,9 +220,9 @@ class Shop:
         return True
 
 
-    def _try_purchase_secret_item(self, item_id):
+    def _try_purchase_prestige_item(self, item_id):
         """Attempt to purchase a secret item, spending stars or money as appropriate."""
-        item = next((i for i in SECRET_ITEMS if i['id'] == item_id), None)
+        item = next((i for i in PRESTIGE_ITEMS if i['id'] == item_id), None)
         if not item:
             return False
         if item['currency'] == 'stars':
@@ -244,7 +243,7 @@ class Shop:
         elif tab == 'consumables':
             count = len(CONSUMABLES)
         else:
-            count = len(SECRET_ITEMS)
+            count = len(PRESTIGE_ITEMS)
         total_content_height = count * ROW_HEIGHT
         return max(0, total_content_height - self.content_height)
 
@@ -310,15 +309,15 @@ class Shop:
                         self._try_purchase_consumable(consumable['id'])
                         return True
 
-        elif self.active_tab == 'secret' and self._secret_unlocked():
-            for i, item in enumerate(SECRET_ITEMS):
+        elif self.active_tab == 'prestige' and self._prestige_unlocked():
+            for i, item in enumerate(PRESTIGE_ITEMS):
                 row_y    = i * ROW_HEIGHT
                 btn_rect = pygame.Rect(0, 0, BTN_WIDTH, BTN_HEIGHT)
                 btn_rect.right   = self.popup_rect.right - 20 - self.popup_rect.left
                 btn_rect.centery = row_y + ROW_HEIGHT // 2
                 if btn_rect.left <= pos[0] - self.popup_rect.left <= btn_rect.right:
                     if btn_rect.top <= content_y <= btn_rect.bottom:
-                        self._try_purchase_secret_item(item['id'])
+                        self._try_purchase_prestige_item(item['id'])
                         return True
 
         return False
@@ -331,12 +330,12 @@ class Shop:
         Renders all rows onto an offscreen surface, then blits a clipped
         window of it onto the popup at the correct scroll position.
 
-        The secret tab has two states:
+        The prestige tab has two states:
           - Locked: shows a single centred unlock prompt instead of items.
-          - Unlocked: renders SECRET_ITEMS rows with star-cost buttons.
+          - Unlocked: renders PRESTIGE_ITEMS rows with star-cost buttons.
         """
-        if self.active_tab == 'secret':
-            self._draw_secret_content(screen)
+        if self.active_tab == 'prestige':
+            self._draw_prestige_content(screen)
             return
 
         if self.active_tab == 'upgrades':
@@ -387,15 +386,15 @@ class Shop:
         visible_area = pygame.Rect(0, scroll, self.popup_rect.width, self.content_height)
         screen.blit(content_surface, (self.popup_rect.left, self.content_top), visible_area)
 
-    def _draw_secret_content(self, screen):
+    def _draw_prestige_content(self, screen):
         """Draw prestige tab item rows with star-cost buttons (gold)."""
         stars = self.manager.stars if self.manager else 0
         # Draw item rows
-        total_height    = max(len(SECRET_ITEMS) * ROW_HEIGHT, self.content_height)
+        total_height    = max(len(PRESTIGE_ITEMS) * ROW_HEIGHT, self.content_height)
         content_surface = pygame.Surface((self.popup_rect.width, total_height))
         content_surface.fill('black')
 
-        for i, item in enumerate(SECRET_ITEMS):
+        for i, item in enumerate(PRESTIGE_ITEMS):
             y = i * ROW_HEIGHT
 
             if item['currency'] == 'stars':
@@ -428,12 +427,12 @@ class Shop:
             btn_surf = self.small_font.render(cost_label, True, text_color)
             content_surface.blit(btn_surf, btn_surf.get_rect(center=btn_rect.center))
 
-            if i < len(SECRET_ITEMS) - 1:
+            if i < len(PRESTIGE_ITEMS) - 1:
                 pygame.draw.line(content_surface, '#222222',
                                  (20, y + ROW_HEIGHT - 1),
                                  (self.popup_rect.width - 20, y + ROW_HEIGHT - 1), 1)
 
-        scroll       = self.scroll_offsets['secret']
+        scroll       = self.scroll_offsets['prestige']
         visible_area = pygame.Rect(0, scroll, self.popup_rect.width, self.content_height)
         screen.blit(content_surface, (self.popup_rect.left, self.content_top), visible_area)
 
@@ -459,7 +458,7 @@ class Shop:
             pygame.draw.rect(screen, fill_color,    rect)
             pygame.draw.rect(screen, border_color,  rect, 2 if is_active else 1)
 
-            label    = 'Prestige' if tab_id == 'secret' else tab_id.capitalize()
+            label    = 'Prestige' if tab_id == 'prestige' else tab_id.capitalize()
             tab_surf = self.small_font.render(label, True, 'white')
             screen.blit(tab_surf, tab_surf.get_rect(center=rect.center))
 
@@ -479,8 +478,8 @@ class Shop:
             scroll = self.scroll_offsets[self.active_tab]
             if self.active_tab == 'upgrades':
                 item_count = len(self._visible_upgrades())
-            elif self.active_tab == 'secret':
-                item_count = len(SECRET_ITEMS)
+            elif self.active_tab == 'prestige':
+                item_count = len(PRESTIGE_ITEMS)
             else:
                 item_count = len(CONSUMABLES)
             total_height = item_count * ROW_HEIGHT

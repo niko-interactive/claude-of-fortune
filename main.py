@@ -74,7 +74,7 @@ while running:
                 clicked = menu_bar.handle_click(event.pos)
                 if clicked == 'debug_money':
                     manager.money += 10_000
-                    manager.streak_count += 8
+                    manager.streak_count += 9
                 elif clicked == 'prestige':
                     prestige_popup = Popup(
                         'PRESTIGE', font, *SCREEN_SIZE,
