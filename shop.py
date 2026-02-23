@@ -15,9 +15,8 @@ class Shop:
     Consumables are purchased and used immediately.
     Prestige items cost stars (*) and are permanently unlocked across losses.
 
-    The prestige tab is invisible until the player has at least 1 star, then visible
-    but locked. Clicking it while locked spends 5 stars to unlock it permanently.
-    Once unlocked, it behaves like a normal tab.
+    The prestige tab is invisible until the player has prestiged at least once.
+    Once visible it behaves like a normal tab.
 
     Money and purchased_upgrades are owned by GameManager. The shop reads
     them via manager references and never tracks them itself. Consumable
@@ -42,15 +41,15 @@ class Shop:
         self.scroll_offsets = {
             'upgrades':    0,
             'consumables': 0,
-            'prestige':      0,
+            'prestige':    0,
         }
 
         # Set by GameManager each round — called when a consumable is purchased
-        self.on_reveal_consonant = None
-        self.on_reveal_vowel     = None
+        self.on_reveal_consonant  = None
+        self.on_reveal_vowel      = None
         self.on_eliminate_letters = None
-        self.on_free_guess       = None
-        self.on_bonus_strike     = None
+        self.on_free_guess        = None
+        self.on_bonus_strike      = None
 
         # Set by main.py after GameManager is created
         self.manager = None
@@ -60,16 +59,14 @@ class Shop:
         self.popup_rect.center = (screen_width // 2, screen_height // 2)
 
         # Tab dimensions — rects are computed dynamically in _build_tab_rects()
-        # so that the visible tabs stay centred whether the prestige tab is shown or not.
         self.tab_width  = 140
         self.tab_height = 36
         self.tab_gap    = 16
         self.tab_y      = self.popup_rect.top + 55
 
         # Scrollable content area — sits below the tab row, above the close button.
-        # Inset by 2px on each side to stay inside the popup border.
         self.content_top    = self.popup_rect.top + 110
-        self.content_bottom = self.popup_rect.bottom - 65  # leaves room for close button
+        self.content_bottom = self.popup_rect.bottom - 65
         self.content_height = self.content_bottom - self.content_top
         self.content_rect   = pygame.Rect(
             self.popup_rect.left + 2,
@@ -91,27 +88,22 @@ class Shop:
         self.scroll_offsets = {k: 0 for k in self.scroll_offsets}
 
     def _prestige_visible(self):
-        """
-        Prestige tab appears after the player has prestiged at least once.
-        Once visible it never disappears.
-        """
+        """Prestige tab appears after the player has prestiged at least once."""
         return self.manager and self.manager.prestige_count >= 1
 
     def _prestige_unlocked(self):
-        """Prestige tab is always enterable once visible (after first prestige)."""
+        """Prestige tab is always enterable once visible."""
         return self._prestige_visible()
-
 
     def _build_tab_rects(self):
         """
         Build and return tab rects centred in the popup for however many tabs are
-        currently visible. Always includes upgrades and consumables. Adds secret
-        only when _prestige_visible() is True, keeping visible tabs centred whether
-        or not the prestige tab has appeared yet.
+        currently visible. Always includes upgrades and consumables. Adds prestige
+        only when _prestige_visible() is True.
         """
-        visible_tabs = ["upgrades", "consumables"]
+        visible_tabs = ['upgrades', 'consumables']
         if self._prestige_visible():
-            visible_tabs.append("secret")
+            visible_tabs.append('prestige')
         n = len(visible_tabs)
         total_width = self.tab_width * n + self.tab_gap * (n - 1)
         start_x = self.popup_rect.left + (self.popup_rect.width - total_width) // 2
@@ -153,12 +145,10 @@ class Shop:
             return self.manager.free_guess_active
 
         if consumable_id == 'bonus_strike':
-            # Can always recover a used strike; cap only applies to true bonus strikes
             if self.manager.strikes and self.manager.strikes.count > 0:
                 return False
             return self.manager.bonus_strikes >= 3
 
-        # For the remaining consumables, check if there's anything left to act on
         phrase   = self.manager.phrase
         alphabet = self.manager.alphabet
         if phrase is None or alphabet is None:
@@ -182,6 +172,31 @@ class Shop:
             return len(wrong_letters) == 0
 
         return False
+
+    # --- Prestige item helpers ---
+
+    def _visible_prestige_items(self):
+        """
+        Return prestige items that should be shown in the shop.
+        Items with a 'requires' field are hidden until that prerequisite is owned.
+        """
+        owned = self.manager.prestige_owned if self.manager else set()
+        return [
+            item for item in PRESTIGE_ITEMS
+            if item['requires'] is None or item['requires'] in owned
+        ]
+
+    def _is_prestige_item_owned(self, item_id):
+        """Return True if a one-time prestige item has already been purchased."""
+        return bool(self.manager and item_id in self.manager.prestige_owned)
+
+    def _can_afford_prestige_item(self, item):
+        """Return True if the player can afford this prestige item right now."""
+        if not self.manager:
+            return False
+        if item['currency'] == 'stars':
+            return self.manager.stars >= item['cost']
+        return self.manager.money >= item['cost']
 
     # --- Purchases ---
 
@@ -219,19 +234,37 @@ class Shop:
 
         return True
 
-
     def _try_purchase_prestige_item(self, item_id):
-        """Attempt to purchase a secret item, spending stars or money as appropriate."""
+        """
+        Attempt to purchase a prestige item.
+        - Checks the item exists in the visible list (prereq satisfied).
+        - Blocks re-purchase of one_time items.
+        - Deducts stars or money.
+        - Calls manager.purchase_prestige_item() to apply the permanent effect.
+        """
         item = next((i for i in PRESTIGE_ITEMS if i['id'] == item_id), None)
         if not item:
             return False
+
+        # Must be visible (prereq owned)
+        visible_ids = {i['id'] for i in self._visible_prestige_items()}
+        if item_id not in visible_ids:
+            return False
+
+        # Block re-purchase of one_time items
+        if item.get('one_time') and self._is_prestige_item_owned(item_id):
+            return False
+
+        # Deduct cost
         if item['currency'] == 'stars':
             if not self.manager.spend_stars(item['cost']):
                 return False
         else:
             if not self.manager.spend(item['cost']):
                 return False
-        # Placeholder: no effect yet. Future items wire callbacks here.
+
+        # Apply effect via manager
+        self.manager.purchase_prestige_item(item_id)
         return True
 
     # --- Scroll ---
@@ -243,7 +276,7 @@ class Shop:
         elif tab == 'consumables':
             count = len(CONSUMABLES)
         else:
-            count = len(PRESTIGE_ITEMS)
+            count = len(self._visible_prestige_items())
         total_content_height = count * ROW_HEIGHT
         return max(0, total_content_height - self.content_height)
 
@@ -265,7 +298,7 @@ class Shop:
     # --- Click Handling ---
 
     def handle_click(self, pos):
-        """Handle all clicks within the shop popup (tabs, buy buttons, close). Button toggled by MenuBar."""
+        """Handle all clicks within the shop popup (tabs, buy buttons, close)."""
         if not self.visible:
             return False
 
@@ -279,7 +312,6 @@ class Shop:
             self._switch_tab(tab_id)
             return True
 
-        # Only register clicks inside the scrollable content area
         if not self.content_rect.collidepoint(pos):
             return False
 
@@ -310,7 +342,8 @@ class Shop:
                         return True
 
         elif self.active_tab == 'prestige' and self._prestige_unlocked():
-            for i, item in enumerate(PRESTIGE_ITEMS):
+            visible = self._visible_prestige_items()
+            for i, item in enumerate(visible):
                 row_y    = i * ROW_HEIGHT
                 btn_rect = pygame.Rect(0, 0, BTN_WIDTH, BTN_HEIGHT)
                 btn_rect.right   = self.popup_rect.right - 20 - self.popup_rect.left
@@ -329,10 +362,6 @@ class Shop:
         Draw the scrollable content for the active tab.
         Renders all rows onto an offscreen surface, then blits a clipped
         window of it onto the popup at the correct scroll position.
-
-        The prestige tab has two states:
-          - Locked: shows a single centred unlock prompt instead of items.
-          - Unlocked: renders PRESTIGE_ITEMS rows with star-cost buttons.
         """
         if self.active_tab == 'prestige':
             self._draw_prestige_content(screen)
@@ -351,11 +380,10 @@ class Shop:
             y          = i * ROW_HEIGHT
             is_upgrade = self.active_tab == 'upgrades'
 
-            owned     = is_upgrade and item['id'] in self.manager.purchased_upgrades
-            disabled  = not is_upgrade and self._is_consumable_disabled(item['id'])
+            owned      = is_upgrade and item['id'] in self.manager.purchased_upgrades
+            disabled   = not is_upgrade and self._is_consumable_disabled(item['id'])
             can_afford = self.manager.money >= item['cost']
 
-            # Labels always white, descriptions always grey regardless of state
             label_surf = self.small_font.render(item['label'],       True, 'white')
             desc_surf  = self.small_font.render(item['description'], True, '#888888')
             content_surface.blit(label_surf, (20, y + 6))
@@ -366,7 +394,7 @@ class Shop:
             btn_rect.centery = y + ROW_HEIGHT // 2
 
             if owned:
-                btn_color, btn_text, text_color, border_color = '#333333', 'Owned',          '#555555', '#555555'
+                btn_color, btn_text, text_color, border_color = '#333333', 'Owned',           '#555555', '#555555'
             elif disabled or not can_afford:
                 btn_color, btn_text, text_color, border_color = '#222222', f'${item["cost"]}', '#555555', '#555555'
             else:
@@ -387,24 +415,31 @@ class Shop:
         screen.blit(content_surface, (self.popup_rect.left, self.content_top), visible_area)
 
     def _draw_prestige_content(self, screen):
-        """Draw prestige tab item rows with star-cost buttons (gold)."""
-        stars = self.manager.stars if self.manager else 0
-        # Draw item rows
-        total_height    = max(len(PRESTIGE_ITEMS) * ROW_HEIGHT, self.content_height)
+        """
+        Draw prestige tab item rows with star-cost buttons (gold).
+        Only shows items whose prerequisite has been purchased.
+        Owned one_time items show a greyed-out 'Owned' button.
+        """
+        stars   = self.manager.stars if self.manager else 0
+        visible = self._visible_prestige_items()
+
+        total_height    = max(len(visible) * ROW_HEIGHT, self.content_height)
         content_surface = pygame.Surface((self.popup_rect.width, total_height))
         content_surface.fill('black')
 
-        for i, item in enumerate(PRESTIGE_ITEMS):
+        for i, item in enumerate(visible):
             y = i * ROW_HEIGHT
 
+            owned = item.get('one_time') and self._is_prestige_item_owned(item['id'])
+
             if item['currency'] == 'stars':
-                can_afford = stars >= item['cost']
-                cost_label = f'*{item["cost"]}'
+                can_afford    = stars >= item['cost']
+                cost_label    = f'*{item["cost"]}'
                 afford_color  = 'gold'
                 disable_color = '#666600'
             else:
-                can_afford = self.manager and self.manager.money >= item['cost']
-                cost_label = f'${item["cost"]}'
+                can_afford    = self.manager and self.manager.money >= item['cost']
+                cost_label    = f'${item["cost"]}'
                 afford_color  = 'white'
                 disable_color = '#555555'
 
@@ -417,17 +452,19 @@ class Shop:
             btn_rect.right   = self.popup_rect.width - 20
             btn_rect.centery = y + ROW_HEIGHT // 2
 
-            if can_afford:
-                btn_color, text_color, border_color = 'black',    afford_color,  afford_color
+            if owned:
+                btn_color, btn_text, text_color, border_color = '#333333', 'Owned', '#555555', '#555555'
+            elif can_afford:
+                btn_color, btn_text, text_color, border_color = 'black',    cost_label, afford_color,  afford_color
             else:
-                btn_color, text_color, border_color = '#222222',  disable_color, disable_color
+                btn_color, btn_text, text_color, border_color = '#222222',  cost_label, disable_color, disable_color
 
             pygame.draw.rect(content_surface, btn_color,    btn_rect)
             pygame.draw.rect(content_surface, border_color, btn_rect, 1)
-            btn_surf = self.small_font.render(cost_label, True, text_color)
+            btn_surf = self.small_font.render(btn_text, True, text_color)
             content_surface.blit(btn_surf, btn_surf.get_rect(center=btn_rect.center))
 
-            if i < len(PRESTIGE_ITEMS) - 1:
+            if i < len(visible) - 1:
                 pygame.draw.line(content_surface, '#222222',
                                  (20, y + ROW_HEIGHT - 1),
                                  (self.popup_rect.width - 20, y + ROW_HEIGHT - 1), 1)
@@ -437,49 +474,43 @@ class Shop:
         screen.blit(content_surface, (self.popup_rect.left, self.content_top), visible_area)
 
     def draw(self, screen):
-        """Draw the shop popup if visible. Button is drawn by MenuBar."""
+        """Draw the shop popup if visible."""
         if not self.visible:
             return
 
-        # Popup background and border
         pygame.draw.rect(screen, 'black', self.popup_rect)
         pygame.draw.rect(screen, 'white', self.popup_rect, 2)
 
-        # Title
         title = self.font.render('SHOP', True, 'white')
         screen.blit(title, title.get_rect(centerx=self.popup_rect.centerx, top=self.popup_rect.top + 15))
 
         for tab_id, rect in self._build_tab_rects().items():
-
             is_active    = self.active_tab == tab_id
-            border_color = 'white'
             fill_color   = '#222222' if is_active else 'black'
+            border_color = 'white'
 
-            pygame.draw.rect(screen, fill_color,    rect)
-            pygame.draw.rect(screen, border_color,  rect, 2 if is_active else 1)
+            pygame.draw.rect(screen, fill_color,   rect)
+            pygame.draw.rect(screen, border_color, rect, 2 if is_active else 1)
 
-            label    = 'Prestige' if tab_id == 'prestige' else tab_id.capitalize()
+            label    = tab_id.capitalize()
             tab_surf = self.small_font.render(label, True, 'white')
             screen.blit(tab_surf, tab_surf.get_rect(center=rect.center))
 
-        # Divider below tabs
         pygame.draw.line(screen, 'grey',
                          (self.popup_rect.left + 20,  self.popup_rect.top + 100),
                          (self.popup_rect.right - 20, self.popup_rect.top + 100), 1)
 
-        # Scrollable content — clipped so rows can't bleed outside the popup
         screen.set_clip(self.content_rect)
         self._draw_tab_content(screen)
         screen.set_clip(None)
 
-        # Scroll indicator — only relevant for tabs with scrollable content
         max_scroll = self._max_scroll(self.active_tab)
         if max_scroll > 0:
             scroll = self.scroll_offsets[self.active_tab]
             if self.active_tab == 'upgrades':
                 item_count = len(self._visible_upgrades())
             elif self.active_tab == 'prestige':
-                item_count = len(PRESTIGE_ITEMS)
+                item_count = len(self._visible_prestige_items())
             else:
                 item_count = len(CONSUMABLES)
             total_height = item_count * ROW_HEIGHT
@@ -488,7 +519,6 @@ class Shop:
             bar_rect     = pygame.Rect(self.popup_rect.right - 7, bar_y, 4, bar_height)
             pygame.draw.rect(screen, '#555555', bar_rect, border_radius=2)
 
-        # Close button — drawn after set_clip(None) so it's never clipped
         pygame.draw.rect(screen, 'black', self.close_rect)
         pygame.draw.rect(screen, 'white', self.close_rect, 2)
         close_surf = self.font.render('Close', True, 'white')

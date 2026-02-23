@@ -59,6 +59,11 @@ class GameManager:
         self.permanent_milestones = set()           # Milestones locked in via prestige; never resets
         self._stars_display_unlocked = False  # Backing field — use stars_display_unlocked property
 
+        # Prestige purchase state — permanent, never resets on loss
+        self.prestige_owned        = set()   # ids of all one_time prestige items ever purchased
+        self.old_man_unlocked      = False   # True after 'old_man' prestige item is purchased
+        self.unlocked_color_topics = set()   # ids of color topic prestige items purchased
+
         # Round state — rebuilt each round
         self.phrase = None
         self.alphabet = None
@@ -99,6 +104,17 @@ class GameManager:
             return False
         self.stars -= amount
         return True
+
+    def purchase_prestige_item(self, item_id):
+        """
+        Apply the permanent effect of a prestige item after it has been paid for.
+        Called by Shop._try_purchase_prestige_item after a successful deduction.
+        """
+        self.prestige_owned.add(item_id)
+        if item_id == 'old_man':
+            self.old_man_unlocked = True
+        elif item_id.startswith('topic_'):
+            self.unlocked_color_topics.add(item_id)
 
     @property
     def stars_display_unlocked(self):
@@ -176,7 +192,7 @@ class GameManager:
         self.current_tier = self._get_difficulty_tier()
         self._build_pool()
         self._start_round()
-        # stars, permanent_milestones, prestige_count intentionally not reset here
+        # stars, permanent_milestones, prestige_count, prestige_owned intentionally not reset here
         self.star_buffer = 0        # Pending stars are lost on loss — prestige to keep them
         self.pending_milestones = set()  # Milestones not yet prestiged are re-earnable next run
 

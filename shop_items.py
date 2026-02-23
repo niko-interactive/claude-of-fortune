@@ -117,14 +117,68 @@ CONSUMABLES = [
 ]
 
 # --- Prestige Shop Definitions ---
-# Items in the prestige shop cost stars (*) or money ($).
 # currency: 'stars' | 'money'
+# one_time: True  — shows 'Owned' after purchase, can never be rebought
+# requires: id of a prestige item that must already be owned, or None
+#
+# Color topics are chained: each requires the previous color to be purchased first.
+# They will not appear in the shop at all until their prerequisite is owned.
 PRESTIGE_ITEMS = [
     {
-        'id':          'placeholder',
-        'label':       'Placeholder',
-        'description': 'A mysterious item. More to come.',
+        'id':          'old_man',
+        'label':       'The Old Man',
+        'description': 'Rescue a mysterious stranger.',
+        'cost':        5,
+        'currency':    'stars',
+        'one_time':    True,
+        'requires':    None,
+    },
+    {
+        'id':          'topic_blue',
+        'label':       'Blue',
+        'description': 'Unlocks a new Blue category of puzzles.',
         'cost':        2,
         'currency':    'stars',
+        'one_time':    True,
+        'requires':    'old_man',
+    },
+    {
+        'id':          'topic_green',
+        'label':       'Green',
+        'description': 'Unlocks a new Green category of puzzles.',
+        'cost':        2,
+        'currency':    'stars',
+        'one_time':    True,
+        'requires':    'topic_blue',
+    },
+    {
+        'id':          'topic_yellow',
+        'label':       'Yellow',
+        'description': 'Unlocks a new Yellow category of puzzles.',
+        'cost':        2,
+        'currency':    'stars',
+        'one_time':    True,
+        'requires':    'topic_green',
+    },
+    {
+        'id':          'topic_red',
+        'label':       'Red',
+        'description': 'Unlocks a new Red category of puzzles.',
+        'cost':        2,
+        'currency':    'stars',
+        'one_time':    True,
+        'requires':    'topic_yellow',
+    },
+    {
+        'id':          'topic_purple',
+        'label':       'Purple',
+        'description': 'Unlocks a new Purple category of puzzles.',
+        'cost':        2,
+        'currency':    'stars',
+        'one_time':    True,
+        'requires':    'topic_red',
     },
 ]
+
+# Ordered color topic ids — useful elsewhere for checking unlock state
+COLOR_TOPIC_IDS = ['topic_blue', 'topic_green', 'topic_yellow', 'topic_red', 'topic_purple']

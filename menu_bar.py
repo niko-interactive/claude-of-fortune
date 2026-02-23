@@ -9,7 +9,7 @@ BTN_TOP    = 20
 
 class MenuBar:
     """
-    Owns and draws all top-center menu buttons (Shop, Prestige, etc.).
+    Owns and draws all top-center menu buttons (Shop, Prestige, Old Man, etc.).
     Buttons are centered horizontally as a group regardless of how many
     are currently visible. New buttons can be added by appending to the
     _buttons list and implementing their visibility/click logic here.
@@ -23,14 +23,15 @@ class MenuBar:
         self.small_font   = pygame.font.SysFont('Arial', 20)
         self.screen_width = screen_width
         self.shop         = shop
-        self.manager      = None  # Set by main.py after GameManager is created
+        self.manager      = None 
 
         # Each entry: (id, label, always_visible, gold_style)
         # Visibility for non-always buttons is checked dynamically in _visible_buttons()
         self._button_defs = [
-            ('shop',     'Shop',     True,  False),
-            ('prestige', 'Prestige', False, True),
-            ('debug_money', 'Debug', False, False),  # Debug only — remove before release
+            ('shop',        'Shop',     True,  False),
+            ('prestige',    'Prestige', False, True),
+            ('old_man',     'Old Man',  False, False),
+            ('debug_money', 'Debug',    False, False),  # Debug only — remove before release
         ]
 
         # Rects are rebuilt each frame in draw() and stored for hit-testing in handle_click()
@@ -43,6 +44,8 @@ class MenuBar:
             if always:
                 result.append((btn_id, label, gold))
             elif btn_id == 'prestige' and self.manager and self.manager.star_buffer > 0:
+                result.append((btn_id, label, gold))
+            elif btn_id == 'old_man' and self.manager and self.manager.old_man_unlocked:
                 result.append((btn_id, label, gold))
             elif btn_id == 'debug_money':
                 result.append((btn_id, label, gold))  # Always visible for testing

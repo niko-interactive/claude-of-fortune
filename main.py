@@ -3,6 +3,7 @@ import pygame
 from constants import SCREEN_SIZE
 from game_manager import GameManager, PRESTIGE_UNLOCK_STREAK
 from menu_bar import MenuBar
+from old_man import OldMan
 from popup import Popup
 from shop import Shop
 from score import Score
@@ -26,9 +27,11 @@ shop.manager     = manager
 score.manager    = manager
 menu_bar.manager = manager
 
-popup              = None   # Active win/lose/game-complete popup
-pending_lose       = False  # True when lose popup is showing but lose() hasn't fired
-prestige_popup     = None   # Active prestige popup
+old_man = OldMan(font, *SCREEN_SIZE)
+
+popup          = None   # Active win/lose/game-complete popup
+pending_lose   = False  # True when lose popup is showing but lose() hasn't fired
+prestige_popup = None   # Active prestige popup
 
 
 def dismiss_popup():
@@ -59,7 +62,11 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 
-            if prestige_popup:
+            # Old Man overlay has highest priority — consumes all clicks while open
+            if old_man.handle_click(event.pos):
+                pass
+
+            elif prestige_popup:
                 result = prestige_popup.handle_click(event.pos)
                 if result == 'confirm':
                     manager.prestige()
@@ -84,6 +91,8 @@ while running:
                         streak=manager.streak_count,
                         prestige_unlock_streak=PRESTIGE_UNLOCK_STREAK,
                     )
+                elif clicked == 'old_man':
+                    old_man.visible = not old_man.visible
                 elif clicked is None:
                     shop.handle_click(event.pos)
                     # A consumable (reveal vowel/consonant) may have solved the puzzle
@@ -98,7 +107,9 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                if prestige_popup:
+                if old_man.visible:
+                    old_man.visible = False
+                elif prestige_popup:
                     prestige_popup = None
                 elif popup:
                     dismiss_popup()
@@ -106,7 +117,8 @@ while running:
                     shop.visible = False
 
         # Only accept letter guesses when no overlay is open
-        if event.type == pygame.KEYDOWN and popup is None and not shop.visible and not prestige_popup:
+        if event.type == pygame.KEYDOWN and popup is None and not shop.visible \
+                and not prestige_popup and not old_man.visible:
             if event.unicode.isalpha():
                 letter = event.unicode.upper()
 
@@ -138,6 +150,8 @@ while running:
 
     if prestige_popup:
         prestige_popup.draw(screen)
+
+    old_man.draw(screen)
 
     pygame.display.update()
     clock.tick(30)
