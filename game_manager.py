@@ -6,7 +6,7 @@ from phrase import Phrase
 from alphabet import Alphabet
 from strikes import Strikes
 from topic import Topic
-from shop_items import VOWELS, CONSONANTS, AUTO_CONSONANT_SLOTS, AUTO_VOWEL_SLOTS, EXTRA_STRIKE_SLOTS
+from shop_items import VOWELS, CONSONANTS, UPGRADES
 
 
 # Streak round required before the player can prestige — adjust for balancing
@@ -186,44 +186,40 @@ class GameManager:
         self._start_round()
 
     def max_strikes(self):
-        """Return total strikes allowed based on purchased strike upgrades."""
-        strikes = 3
-        for i in range(EXTRA_STRIKE_SLOTS):
-            if f'extra_strike_{i + 1}' in self.purchased_upgrades:
-                strikes += 1
-        return strikes
+        """Return total strikes allowed based on purchased extra_strike upgrades."""
+        count = sum(1 for k in self.purchased_upgrades if k == 'extra_strike' or k.startswith('extra_strike_'))
+        return 3 + count
 
     def get_auto_guesses(self):
         """
         Return letters to auto-reveal at round start based on purchased upgrades.
-        Loops over all consonant and vowel slots. Guaranteed slots pull only from
-        letters in the phrase. Already-chosen letters are excluded from subsequent
-        picks to avoid duplicates.
+        Each free_consonant/vowel purchase adds one auto-reveal slot.
+        The matching guaranteed purchase makes that slot pull only from phrase letters.
         """
-        guesses = []
+        guesses        = []
         phrase_letters = set(c for c in self.phrase.word if c.isalpha())
 
-        for i in range(AUTO_CONSONANT_SLOTS):
-            random_id = f'auto_consonant_{i + 1}'
-            guaranteed_id = f'auto_consonant_guaranteed_{i + 1}'
-            if random_id not in self.purchased_upgrades:
-                break
-            guaranteed = guaranteed_id in self.purchased_upgrades
-            available = phrase_letters & CONSONANTS if guaranteed else CONSONANTS
-            pool = list(available - set(guesses))
+        free_consonants = sum(1 for k in self.purchased_upgrades
+                              if k == 'free_consonant' or k.startswith('free_consonant_'))
+        guar_consonants = sum(1 for k in self.purchased_upgrades
+                              if k == 'guaranteed_consonant' or k.startswith('guaranteed_consonant_'))
+        for slot in range(free_consonants):
+            guaranteed = slot < guar_consonants
+            available  = phrase_letters & CONSONANTS if guaranteed else CONSONANTS
+            pool       = list(available - set(guesses))
             if not pool:
                 pool = list(CONSONANTS - set(guesses))
             if pool:
                 guesses.append(random.choice(pool))
 
-        for i in range(AUTO_VOWEL_SLOTS):
-            random_id = f'auto_vowel_{i + 1}'
-            guaranteed_id = f'auto_vowel_guaranteed_{i + 1}'
-            if random_id not in self.purchased_upgrades:
-                break
-            guaranteed = guaranteed_id in self.purchased_upgrades
-            available = phrase_letters & VOWELS if guaranteed else VOWELS
-            pool = list(available - set(guesses))
+        free_vowels = sum(1 for k in self.purchased_upgrades
+                          if k == 'free_vowel' or k.startswith('free_vowel_'))
+        guar_vowels = sum(1 for k in self.purchased_upgrades
+                          if k == 'guaranteed_vowel' or k.startswith('guaranteed_vowel_'))
+        for slot in range(free_vowels):
+            guaranteed = slot < guar_vowels
+            available  = phrase_letters & VOWELS if guaranteed else VOWELS
+            pool       = list(available - set(guesses))
             if not pool:
                 pool = list(VOWELS - set(guesses))
             if pool:
