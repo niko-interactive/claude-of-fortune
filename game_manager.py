@@ -54,15 +54,13 @@ class GameManager:
         self.total_rounds_completed = 0
         self.stars = 0                       # Spendable stars, earned via prestige
         self.prestige_count = 0              # Total number of times player has prestiged; never resets
-        self.star_buffer = 0                        # Pending stars earned this run, lost on loss
-        self.pending_milestones = set()             # Milestones earned this run but not yet prestiged; wiped on loss
-        self.permanent_milestones = set()           # Milestones locked in via prestige; never resets
         self._stars_display_unlocked = False  # Backing field — use stars_display_unlocked property
 
         # Prestige purchase state — permanent, never resets on loss
         self.prestige_owned        = set()   # ids of all one_time prestige items ever purchased
         self.old_man_unlocked      = False   # True after 'old_man' prestige item is purchased
         self.unlocked_color_topics = set()   # ids of color topic prestige items purchased
+        self.star_streak_discounts = 0       # Times 'star_streak_discount' has been purchased (max 5)
 
         # Round state — rebuilt each round
         self.phrase = None
@@ -110,20 +108,24 @@ class GameManager:
         Apply the permanent effect of a prestige item after it has been paid for.
         Called by Shop._try_purchase_prestige_item after a successful deduction.
         """
-        self.prestige_owned.add(item_id)
+        if item_id != 'star_streak_discount':
+            self.prestige_owned.add(item_id)
         if item_id == 'old_man':
             self.old_man_unlocked = True
         elif item_id.startswith('topic_'):
             self.unlocked_color_topics.add(item_id)
+        elif item_id == 'star_streak_discount':
+            self.star_streak_discounts = min(self.star_streak_discounts + 1, 5)
+
+    @property
+    def star_buffer(self):
+        """Stars pending for this run — simply the count of milestones passed at the current streak."""
+        return self._count_stars_for_streak(self.streak_count)
 
     @property
     def stars_display_unlocked(self):
-        """
-        True if the star display should be shown. Derived from live state so it
-        works correctly whether stars are earned naturally, set manually for testing,
-        or restored from a save file — no separate flag to keep in sync.
-        """
-        return self._stars_display_unlocked or bool(self.permanent_milestones) or bool(self.pending_milestones) or self.stars > 0
+        """True if the star display should be shown."""
+        return self._stars_display_unlocked or self.stars > 0 or self.star_buffer > 0
 
     @stars_display_unlocked.setter
     def stars_display_unlocked(self, value):
@@ -141,9 +143,7 @@ class GameManager:
         meta state. Behaves like lose() except star_buffer is cashed out rather than wiped.
         """
         self.stars += self.star_buffer
-        self.star_buffer = 0
-        self.permanent_milestones |= self.pending_milestones  # Lock these in permanently
-        self.pending_milestones = set()
+        self._stars_display_unlocked = True  # Latch permanently — stars have been earned
         self.prestige_count += 1
         self.previous_streak = self.streak_count
         self.streak_count = 0
@@ -167,14 +167,6 @@ class GameManager:
         self.streak_count += 1
         self.total_rounds_completed += 1
 
-        # Award a buffer star the first time this streak milestone is reached in this run.
-        # Only blocked by permanent_milestones (locked in via prestige) — losing clears
-        # pending_milestones so those stars can be re-earned on the next run.
-        milestone = (self.streak_count // 10) * 10
-        if milestone > 0 and milestone not in self.permanent_milestones and milestone not in self.pending_milestones:
-            self.pending_milestones.add(milestone)
-            self.star_buffer += 1
-            self.stars_display_unlocked = True
 
         difficulty = self._calculate_difficulty(self.phrase.word, self.topic.topic)
         strikes_left = self.strikes.max_strikes - self.strikes.count  # bonus strikes excluded intentionally
@@ -192,9 +184,6 @@ class GameManager:
         self.current_tier = self._get_difficulty_tier()
         self._build_pool()
         self._start_round()
-        # stars, permanent_milestones, prestige_count, prestige_owned intentionally not reset here
-        self.star_buffer = 0        # Pending stars are lost on loss — prestige to keep them
-        self.pending_milestones = set()  # Milestones not yet prestiged are re-earnable next run
 
     def max_strikes(self):
         """Return total strikes allowed based on purchased strike upgrades."""
@@ -241,6 +230,35 @@ class GameManager:
                 guesses.append(random.choice(pool))
 
         return guesses
+
+    def _star_milestones(self):
+        """
+        Return an ordered list of streak values at which a star is awarded.
+
+        Stars 1–5: every 10 streaks (10, 20, 30, 40, 50).
+        Star 6 onward: each gap grows by (10 - star_streak_discounts), minimum 1.
+          e.g. with 0 discounts: gaps are 10, 20, 30 ... → 50, 70, 100, 140 ...
+          e.g. with 1 discount:  increment is 9  → 50, 68, 95 ...
+          e.g. with 5 discounts: increment is 5  → 50, 65, 85 ...
+
+        We generate enough milestones to cover any realistic run (up to 200 stars).
+        """
+        milestones = []
+        for n in range(1, 6):          # Stars 1–5 at 10, 20, 30, 40, 50
+            milestones.append(n * 10)
+        increment   = 10 - self.star_streak_discounts  # base gap growth per extra star
+        increment   = max(increment, 1)
+        gap         = 10 + increment      # gap from 5th star to 6th: 20 normally, 19 with 1 discount, etc.
+        current     = 50
+        for _ in range(195):           # Stars 6–200
+            current += gap
+            milestones.append(current)
+            gap += increment
+        return milestones
+
+    def _count_stars_for_streak(self, streak):
+        """Return how many star milestones fall at or below the given streak."""
+        return sum(1 for m in self._star_milestones() if m <= streak)
 
     # --- Round Lifecycle ---
 

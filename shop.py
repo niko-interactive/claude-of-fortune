@@ -179,16 +179,35 @@ class Shop:
         """
         Return prestige items that should be shown in the shop.
         Items with a 'requires' field are hidden until that prerequisite is owned.
+        Repeatable items (one_time=False) are always shown if their prereq is owned,
+        but are hidden once max_owned is reached.
         """
         owned = self.manager.prestige_owned if self.manager else set()
-        return [
-            item for item in PRESTIGE_ITEMS
-            if item['requires'] is None or item['requires'] in owned
-        ]
+        result = []
+        for item in PRESTIGE_ITEMS:
+            if item['requires'] is not None and item['requires'] not in owned:
+                continue
+            # Hide repeatable items once the player has hit the max
+            if not item.get('one_time', True):
+                max_owned = item.get('max_owned')
+                if max_owned is not None and self.manager:
+                    current = self._repeatable_owned_count(item['id'])
+                    if current >= max_owned:
+                        continue
+            result.append(item)
+        return result
 
     def _is_prestige_item_owned(self, item_id):
         """Return True if a one-time prestige item has already been purchased."""
         return bool(self.manager and item_id in self.manager.prestige_owned)
+
+    def _repeatable_owned_count(self, item_id):
+        """Return how many times a repeatable prestige item has been purchased."""
+        if not self.manager:
+            return 0
+        if item_id == 'star_streak_discount':
+            return self.manager.star_streak_discounts
+        return 0
 
     def _can_afford_prestige_item(self, item):
         """Return True if the player can afford this prestige item right now."""
@@ -246,13 +265,13 @@ class Shop:
         if not item:
             return False
 
-        # Must be visible (prereq owned)
+        # Must be visible (prereq owned and not maxed out)
         visible_ids = {i['id'] for i in self._visible_prestige_items()}
         if item_id not in visible_ids:
             return False
 
         # Block re-purchase of one_time items
-        if item.get('one_time') and self._is_prestige_item_owned(item_id):
+        if item.get('one_time', True) and self._is_prestige_item_owned(item_id):
             return False
 
         # Deduct cost
@@ -430,7 +449,14 @@ class Shop:
         for i, item in enumerate(visible):
             y = i * ROW_HEIGHT
 
-            owned = item.get('one_time') and self._is_prestige_item_owned(item['id'])
+            # For repeatable items, append count to the label text instead of the button
+            owned = item.get('one_time', True) and self._is_prestige_item_owned(item['id'])
+            if not item.get('one_time', True):
+                repeatable_count = self._repeatable_owned_count(item['id'])
+                max_owned        = item.get('max_owned', '?')
+                display_label    = f'{item["label"]} ({repeatable_count}/{max_owned})'
+            else:
+                display_label = item['label']
 
             if item['currency'] == 'stars':
                 can_afford    = stars >= item['cost']
@@ -443,8 +469,8 @@ class Shop:
                 afford_color  = 'white'
                 disable_color = '#555555'
 
-            label_surf = self.small_font.render(item['label'],       True, 'white')
-            desc_surf  = self.small_font.render(item['description'], True, '#888888')
+            label_surf = self.small_font.render(display_label,        True, 'white')
+            desc_surf  = self.small_font.render(item['description'],  True, '#888888')
             content_surface.blit(label_surf, (20, y + 6))
             content_surface.blit(desc_surf,  (20, y + 26))
 
@@ -453,11 +479,11 @@ class Shop:
             btn_rect.centery = y + ROW_HEIGHT // 2
 
             if owned:
-                btn_color, btn_text, text_color, border_color = '#333333', 'Owned', '#555555', '#555555'
+                btn_color, btn_text, text_color, border_color = '#333333', 'Owned',     '#555555', '#555555'
             elif can_afford:
-                btn_color, btn_text, text_color, border_color = 'black',    cost_label, afford_color,  afford_color
+                btn_color, btn_text, text_color, border_color = 'black',   cost_label,  afford_color,  afford_color
             else:
-                btn_color, btn_text, text_color, border_color = '#222222',  cost_label, disable_color, disable_color
+                btn_color, btn_text, text_color, border_color = '#222222', cost_label,  disable_color, disable_color
 
             pygame.draw.rect(content_surface, btn_color,    btn_rect)
             pygame.draw.rect(content_surface, border_color, btn_rect, 1)
